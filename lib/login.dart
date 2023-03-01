@@ -2,9 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:notes_app/home_screen.dart';
-
-
-
+import 'package:notes_app/user/user_home_page.dart';
 
 class SignupScreen extends StatelessWidget {
   SignupScreen({super.key});
@@ -19,15 +17,12 @@ class SignupScreen extends StatelessWidget {
           children: [
             SizedBox(
               height: 150,
-              
             ),
             const Center(
                 child: Text(
               'Sign in to your account',
               style: TextStyle(
-                  fontSize: 24,
-                  color: Colors.white,
-                  fontWeight: FontWeight.w600),
+                  fontSize: 24, color: Colors.white, fontWeight: FontWeight.w600),
             )),
             SizedBox(
               height: 50,
@@ -38,72 +33,71 @@ class SignupScreen extends StatelessWidget {
                 children: [
                   Form(
                       key: _globalKey1,
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: const [
-                                SizedBox(
-                                  width: 20,
-                                ),
-                                Text(
-                                  "Email",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white,
-                                    fontSize: 15,
-                                  ),
-                                ),
-                                Text(
-                                  "*",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.red,
-                                    fontSize: 15,
-                                  ),
-                                ),
-                              ],
+                      child:
+                          Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                        Row(
+                          children: const [
+                            SizedBox(
+                              width: 20,
                             ),
-                            CustomTextField(
-                              textFieldController: _emailController,
-                              hintText: 'Email',
-                            ),
-                            const SizedBox(height: 10),
-                            Row(
-                              children: const [
-                                SizedBox(
-                                  width: 20,
-                                ),
-                                Text(
-                                  "Password",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white,
-                                    fontSize: 15,
-                                  ),
-                                ),
-                                Text(
-                                  "*",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.red,
-                                    fontSize: 15,
-                                  ),
-                                  ),
-                              ],
-                            ),
-                            CustomTextField(
-                              isPassword: true,
-                              textFieldController: _passwordController,
-                              hintText: 'Password',
-                              isVisible: true,
-                              suffixIcon: const Icon(
-                                Icons.visibility_off,
-                                color: Colors.grey,
-                                size: 22,
+                            Text(
+                              "Email",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                                fontSize: 15,
                               ),
                             ),
-                          ])),
+                            Text(
+                              "*",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.red,
+                                fontSize: 15,
+                              ),
+                            ),
+                          ],
+                        ),
+                        CustomTextField(
+                          textFieldController: _emailController,
+                          hintText: 'Email',
+                        ),
+                        const SizedBox(height: 10),
+                        Row(
+                          children: const [
+                            SizedBox(
+                              width: 20,
+                            ),
+                            Text(
+                              "Password",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                                fontSize: 15,
+                              ),
+                            ),
+                            Text(
+                              "*",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.red,
+                                fontSize: 15,
+                              ),
+                            ),
+                          ],
+                        ),
+                        CustomTextField(
+                          isPassword: true,
+                          textFieldController: _passwordController,
+                          hintText: 'Password',
+                          isVisible: true,
+                          suffixIcon: const Icon(
+                            Icons.visibility_off,
+                            color: Colors.grey,
+                            size: 22,
+                          ),
+                        ),
+                      ])),
                   const SizedBox(height: 20),
                   SizedBox(
                       height: 50,
@@ -117,7 +111,7 @@ class SignupScreen extends StatelessWidget {
                         ),
                         onPressed: () {
                           Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => const HomeScreen()));
+                              builder: (context) => const UserHomaPage()));
                         },
                         child: const Text(
                           'Sign in',
@@ -134,10 +128,11 @@ class SignupScreen extends StatelessWidget {
                         visible: true,
                         child: TextButton(
                             onPressed: () {
-                              log("forgot button clicked");
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => const HomeScreen()));
                             },
                             child: const Text(
-                              'Forgot the password?',
+                              'Admin? Login',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: Color(0xFF2CC66D),
@@ -198,7 +193,8 @@ class CustomTextField extends StatelessWidget {
   final int lineNo;
   final bool isPassword;
   final TextInputType inputType;
-  final Color inputColor;@override
+  final Color inputColor;
+  @override
   Widget build(BuildContext context) {
     return Card(
       shape: RoundedRectangleBorder(
