@@ -8,14 +8,60 @@ class UserHomaPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: const Color(0xFF2CC66D),
-        title: const Text(
-          "Home page",
-          style: TextStyle(color: Colors.white),
+        appBar: AppBar(
+          backgroundColor: const Color(0xFF2CC66D),
+          title: const Text(
+            "Home page",
+            style: TextStyle(color: Colors.white),
+          ),
         ),
-      ),
-      // body: Center(child: Text('Home page')),
-    );
+        // show card?
+        body: GridView.count(
+          crossAxisCount: 2,
+          padding: const EdgeInsets.all(20.0),
+          mainAxisSpacing: 20,
+          crossAxisSpacing: 20,
+          children: <Widget>[
+            Container(
+              decoration: BoxDecoration(
+                  color: Colors.red,
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    BoxShadow(
+                        color: Colors.black.withOpacity(0.2),
+                        blurRadius: 10,
+                        spreadRadius: 5)
+                  ]),
+              height: 20,
+              // color: Colors.red,
+            ),
+            Container(
+              decoration: BoxDecoration(
+                  color: Colors.red,
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    BoxShadow(
+                        color: Colors.black.withOpacity(0.2),
+                        blurRadius: 10,
+                        spreadRadius: 5)
+                  ]),
+              height: 20,
+              // color: Colors.red,
+            ),
+            Container(
+              decoration: BoxDecoration(
+                  color: Colors.red,
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    BoxShadow(
+                        color: Colors.black.withOpacity(0.2),
+                        blurRadius: 10,
+                        spreadRadius: 5)
+                  ]),
+              height: 20,
+              // color: Colors.red,
+            ),
+          ],
+        ));
   }
 }

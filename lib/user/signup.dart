@@ -2,11 +2,11 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:notes_app/home_screen.dart';
-import 'package:notes_app/user/signup.dart';
+import 'package:notes_app/login.dart';
 import 'package:notes_app/user/user_home_page.dart';
 
-class LoginScreen extends StatelessWidget {
-  LoginScreen({super.key});
+class SignupScreen extends StatelessWidget {
+  SignupScreen({super.key});
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _globalKey1 = GlobalKey<FormState>();
@@ -21,7 +21,7 @@ class LoginScreen extends StatelessWidget {
             ),
             const Center(
                 child: Text(
-              'Login in to your account',
+              'Sign in to your account',
               style: TextStyle(
                   fontSize: 24, color: Colors.white, fontWeight: FontWeight.w600),
             )),
@@ -98,7 +98,40 @@ class LoginScreen extends StatelessWidget {
                             size: 22,
                           ),
                         ),
-                        
+                        Row(
+                          children: const [
+                            SizedBox(
+                              width: 20,
+                            ),
+                            Text(
+                              "Confirm Password",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                                fontSize: 15,
+                              ),
+                            ),
+                            Text(
+                              "*",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.red,
+                                fontSize: 15,
+                              ),
+                            ),
+                          ],
+                        ),
+                        CustomTextField(
+                          isPassword: true,
+                          textFieldController: _passwordController,
+                          hintText: 'Confirem Password',
+                          isVisible: true,
+                          suffixIcon: const Icon(
+                            Icons.visibility_off,
+                            color: Colors.grey,
+                            size: 22,
+                          ),
+                        ),
                       ])),
                   const SizedBox(height: 20),
                   SizedBox(
@@ -116,7 +149,7 @@ class LoginScreen extends StatelessWidget {
                               builder: (context) => const UserHomaPage()));
                         },
                         child: const Text(
-                          'Log in',
+                          'Sign in',
                           style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
@@ -149,7 +182,7 @@ class LoginScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const Text(
-                        "Don't have an account?",
+                        "Already Have account?",
                         style: TextStyle(
                           fontSize: 16,
                           color: Colors.white,
@@ -158,10 +191,10 @@ class LoginScreen extends StatelessWidget {
                       TextButton(
                           onPressed: () {
                             Navigator.of(context).push(
-                                MaterialPageRoute(builder: (context) => SignupScreen()));
+                                MaterialPageRoute(builder: (context) => LoginScreen()));
                           },
                           child: const Text(
-                            'Sign up',
+                            'Login',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: Color(0xFF2CC66D),
