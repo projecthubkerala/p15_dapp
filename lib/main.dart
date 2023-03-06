@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:notes_app/home_screen.dart';
 import 'package:notes_app/login.dart';
-import 'package:notes_app/notes_services.dart';
+import 'package:notes_app/blockchain_services.dart';
 import 'package:provider/provider.dart';
 
 void main() {
   runApp(
     ChangeNotifierProvider(
-      create: (context) => NotesServices(),
+      create: (context) => BlockchainServices(),
       child: const MyApp(),
     ),
   );

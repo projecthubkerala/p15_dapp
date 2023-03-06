@@ -8,8 +8,8 @@ import 'package:web3dart/web3dart.dart';
 import 'package:http/http.dart' as http;
 import 'package:web_socket_channel/io.dart';
 
-class NotesServices extends ChangeNotifier {
-  List<Voter> notes = [];
+class BlockchainServices extends ChangeNotifier {
+  List<Voter> votes = [];
   final String _rpcUrl =
       Platform.isAndroid ? 'http://10.0.2.2:7545' : 'http://127.0.0.1:7545';
   final String _wsUrl =
@@ -21,7 +21,7 @@ class NotesServices extends ChangeNotifier {
   late Web3Client _web3cient;
 // we use wallnetconnection to connect to the blockchain
 // use metamask
-  NotesServices() {
+  BlockchainServices() {
     init();
   }
 
@@ -78,14 +78,14 @@ class NotesServices extends ChangeNotifier {
     );
 
     int totalTaskLen = totalTaskList[0].toInt();
-    notes.clear();
+    votes.clear();
     for (var i = 0; i < totalTaskLen; i++) {
       var temp = await _web3cient.call(
           contract: _deployedContract,
           function: _notes,
           params: [BigInt.from(i)]);
       if (temp[1] != "") {
-        notes.add(
+        votes.add(
           Voter(
             id: (temp[0] as BigInt).toInt(),
             title: temp[1],

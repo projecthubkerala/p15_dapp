@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:notes_app/notes_services.dart';
+import 'package:notes_app/blockchain_services.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -24,7 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var notesServices = context.watch<NotesServices>();
+    var notesServices = context.watch<BlockchainServices>();
 
     return Scaffold(
       appBar: AppBar(
@@ -37,18 +37,18 @@ class _HomeScreenState extends State<HomeScreen> {
           : RefreshIndicator(
               onRefresh: () async {},
               child: ListView.builder(
-                itemCount: notesServices.notes.length,
+                itemCount: notesServices.votes.length,
                 itemBuilder: (context, index) {
                   return ListTile(
-                    title: Text(notesServices.notes[index].title),
-                    subtitle: Text(notesServices.notes[index].description),
+                    title: Text(notesServices.votes[index].title),
+                    subtitle: Text(notesServices.votes[index].description),
                     trailing: IconButton(
                       icon: const Icon(
                         Icons.delete,
                         color: Colors.red,
                       ),
                       onPressed: () {
-                        notesServices.deleteNote(notesServices.notes[index].id);
+                        notesServices.deleteNote(notesServices.votes[index].id);
                       },
                     ),
                   );
