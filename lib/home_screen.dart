@@ -39,19 +39,37 @@ class _HomeScreenState extends State<HomeScreen> {
               child: ListView.builder(
                 itemCount: notesServices.votes.length,
                 itemBuilder: (context, index) {
-                  return ListTile(
-                    title: Text(notesServices.votes[index].title),
-                    subtitle: Text(notesServices.votes[index].description),
-                    trailing: IconButton(
-                      icon: const Icon(
-                        Icons.delete,
-                        color: Colors.red,
-                      ),
-                      onPressed: () {
-                        notesServices.deleteNote(notesServices.votes[index].id);
-                      },
-                    ),
-                  );
+                  return ListView.builder(
+                      itemCount: 5,
+                      itemBuilder: (context, int) {
+                        return ListTile(
+                          title: Text('Name : Suresh Kumar ${int + 1}'),
+                          subtitle: int == 2 ? Text('LNF') : Text('UNF'),
+                          trailing: IconButton(
+                            icon: const Icon(
+                              Icons.delete,
+                              color: Colors.red,
+                            ),
+                            onPressed: () {
+                              notesServices.deleteNote(notesServices.votes[int].id);
+                            },
+                          ),
+                        );
+                      });
+
+                  // ListTile(
+                  //   title: Text(notesServices.votes[index].title),
+                  //   subtitle: Text(notesServices.votes[index].description),
+                  //   trailing: IconButton(
+                  //     icon: const Icon(
+                  //       Icons.delete,
+                  //       color: Colors.red,
+                  //     ),
+                  //     onPressed: () {
+                  //       notesServices.deleteNote(notesServices.votes[index].id);
+                  //     },
+                  //   ),
+                  // );
                 },
               ),
             ),
@@ -70,6 +88,12 @@ class _HomeScreenState extends State<HomeScreen> {
                       controller: titleController,
                       decoration: const InputDecoration(
                         hintText: 'Enter name',
+                      ),
+                    ),
+                    TextField(
+                      controller: descriptionController,
+                      decoration: const InputDecoration(
+                        hintText: 'Enter Party',
                       ),
                     ),
                     TextField(

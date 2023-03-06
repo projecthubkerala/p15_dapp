@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:notes_app/user/candidate_detaild.dart';
+import 'package:notes_app/user/result.dart';
+import 'package:notes_app/user/vote_now.dart';
 
 class UserHomaPage extends StatelessWidget {
   const UserHomaPage({super.key});
@@ -22,44 +25,65 @@ class UserHomaPage extends StatelessWidget {
           mainAxisSpacing: 20,
           crossAxisSpacing: 20,
           children: <Widget>[
-            Container(
-              decoration: BoxDecoration(
-                  color: Colors.red,
-                  borderRadius: BorderRadius.circular(20),
-                  boxShadow: [
-                    BoxShadow(
-                        color: Colors.black.withOpacity(0.2),
-                        blurRadius: 10,
-                        spreadRadius: 5)
-                  ]),
-              height: 20,
-              // color: Colors.red,
+            InkWell(
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const CommingSoon()));
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                    boxShadow: [
+                      BoxShadow(
+                          color: Colors.black.withOpacity(0.2),
+                          blurRadius: 10,
+                          spreadRadius: 5)
+                    ]),
+                height: 20,
+                // color: Colors.red,
+                child: Center(child: Text('Vote now')),
+              ),
             ),
-            Container(
-              decoration: BoxDecoration(
-                  color: Colors.red,
-                  borderRadius: BorderRadius.circular(20),
-                  boxShadow: [
-                    BoxShadow(
-                        color: Colors.black.withOpacity(0.2),
-                        blurRadius: 10,
-                        spreadRadius: 5)
-                  ]),
-              height: 20,
-              // color: Colors.red,
+            InkWell(
+              onTap: () {
+                Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => const Result()));
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                    boxShadow: [
+                      BoxShadow(
+                          color: Colors.black.withOpacity(0.2),
+                          blurRadius: 10,
+                          spreadRadius: 5)
+                    ]),
+                height: 20,
+                // color: Colors.red,
+                child: Center(child: Text('Result')),
+              ),
             ),
-            Container(
-              decoration: BoxDecoration(
-                  color: Colors.red,
-                  borderRadius: BorderRadius.circular(20),
-                  boxShadow: [
-                    BoxShadow(
-                        color: Colors.black.withOpacity(0.2),
-                        blurRadius: 10,
-                        spreadRadius: 5)
-                  ]),
-              height: 20,
-              // color: Colors.red,
+            InkWell(
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const CandidateDetails()));
+              },
+              child: Container(
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                    boxShadow: [
+                      BoxShadow(
+                          color: Colors.black.withOpacity(0.2),
+                          blurRadius: 10,
+                          spreadRadius: 5)
+                    ]),
+                height: 20,
+                // color: Colors.red,
+                child: Center(child: Text('See Condidate details')),
+              ),
             ),
           ],
         ));
