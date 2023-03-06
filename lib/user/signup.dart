@@ -132,6 +132,68 @@ class SignupScreen extends StatelessWidget {
                             size: 22,
                           ),
                         ),
+                        Row(
+                          children: const [
+                            SizedBox(
+                              width: 20,
+                            ),
+                            Text(
+                              "Name",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                                fontSize: 15,
+                              ),
+                            ),
+                            Text(
+                              "*",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.red,
+                                fontSize: 15,
+                              ),
+                            ),
+                          ],
+                        ),
+                        CustomTextField(
+                          textFieldController: _emailController,
+                          hintText: 'Enater your name',
+                        ),
+                        const SizedBox(height: 10),
+                        Row(
+                          children: const [
+                            SizedBox(
+                              width: 20,
+                            ),
+                            Text(
+                              "Adhar Number",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                                fontSize: 15,
+                              ),
+                            ),
+                            Text(
+                              "*",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.red,
+                                fontSize: 15,
+                              ),
+                            ),
+                          ],
+                        ),
+                        CustomTextField(
+                          isPassword: true,
+                          textFieldController: _passwordController,
+                          hintText: 'Adhar Number',
+                          isVisible: true,
+                          suffixIcon: const Icon(
+                            Icons.visibility_off,
+                            color: Colors.grey,
+                            size: 22,
+                          ),
+                        ),
                       ])),
                   const SizedBox(height: 20),
                   SizedBox(
