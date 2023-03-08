@@ -42,7 +42,7 @@ class SignupScreen extends StatelessWidget {
                               width: 20,
                             ),
                             Text(
-                              "Email",
+                              "Phone Number",
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white,
@@ -60,8 +60,8 @@ class SignupScreen extends StatelessWidget {
                           ],
                         ),
                         CustomTextField(
-                          textFieldController: _emailController,
-                          hintText: 'Email',
+                          // textFieldController: _emailController,
+                          hintText: 'Phone Number',
                         ),
                         const SizedBox(height: 10),
                         Row(
@@ -89,7 +89,7 @@ class SignupScreen extends StatelessWidget {
                         ),
                         CustomTextField(
                           isPassword: true,
-                          textFieldController: _passwordController,
+                          // textFieldController: _passwordController,
                           hintText: 'Password',
                           isVisible: true,
                           suffixIcon: const Icon(
@@ -123,7 +123,7 @@ class SignupScreen extends StatelessWidget {
                         ),
                         CustomTextField(
                           isPassword: true,
-                          textFieldController: _passwordController,
+                          // textFieldController: _passwordController,
                           hintText: 'Confirem Password',
                           isVisible: true,
                           suffixIcon: const Icon(
@@ -156,7 +156,7 @@ class SignupScreen extends StatelessWidget {
                           ],
                         ),
                         CustomTextField(
-                          textFieldController: _emailController,
+                          // textFieldController: _emailController,
                           hintText: 'Enater your name',
                         ),
                         const SizedBox(height: 10),
@@ -185,7 +185,7 @@ class SignupScreen extends StatelessWidget {
                         ),
                         CustomTextField(
                           isPassword: true,
-                          textFieldController: _passwordController,
+                          // textFieldController: _passwordController,
                           hintText: 'Adhar Number',
                           isVisible: true,
                           suffixIcon: const Icon(
@@ -272,64 +272,64 @@ class SignupScreen extends StatelessWidget {
         ));
   }
 }
-
-class CustomTextField extends StatelessWidget {
-  const CustomTextField({
-    super.key,
-    required this.textFieldController,
-    this.isVisible = false,
-    this.suffixIcon = const Icon(Icons.ac_unit),
-    this.hintText = '',
-    this.lineNo = 1,
-    this.isPassword = false,
-    this.inputType = TextInputType.streetAddress,
-    this.inputColor = Colors.white,
-  });
-
-  final TextEditingController textFieldController;
-  final bool isVisible;
-  final Icon suffixIcon;
-  final String hintText;
-  final int lineNo;
-  final bool isPassword;
-  final TextInputType inputType;
-  final Color inputColor;
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(
-          20,
-        ),
-      ),
-      color: Color(0xFF1E1F23),
-      child: TextFormField(
-        keyboardType: inputType,
-        obscureText: isPassword,
-        maxLines: lineNo,
-        style: TextStyle(color: inputColor),
-        controller: textFieldController,
-        decoration: InputDecoration(
-          border: InputBorder.none,
-          contentPadding: const EdgeInsets.only(
-            left: 20,
-            top: 12,
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderSide: const BorderSide(color: Color(0xFF2CC66D), width: 2.0),
-            borderRadius: BorderRadius.circular(20.0),
-          ),
-          hintText: hintText,
-          suffixIcon: Visibility(
-            visible: isVisible,
-            child: suffixIcon,
-          ),
-          hintStyle: TextStyle(
-            fontSize: 16,
-            color: Color(0xFF2CC66D),
-          ),
-        ),
-      ),
-    );
-  }
-}
+// 
+// class CustomTextField extends StatelessWidget {
+//   const CustomTextField({
+//     super.key,
+//     required this.textFieldController,
+//     this.isVisible = false,
+//     this.suffixIcon = const Icon(Icons.ac_unit),
+//     this.hintText = '',
+//     this.lineNo = 1,
+//     this.isPassword = false,
+//     this.inputType = TextInputType.streetAddress,
+//     this.inputColor = Colors.white,
+//   });
+// 
+//   final TextEditingController textFieldController;
+//   final bool isVisible;
+//   final Icon suffixIcon;
+//   final String hintText;
+//   final int lineNo;
+//   final bool isPassword;
+//   final TextInputType inputType;
+//   final Color inputColor;
+//   @override
+//   Widget build(BuildContext context) {
+//     return Card(
+//       shape: RoundedRectangleBorder(
+//         borderRadius: BorderRadius.circular(
+//           20,
+//         ),
+//       ),
+//       color: Color(0xFF1E1F23),
+//       child: TextFormField(
+//         keyboardType: inputType,
+//         obscureText: isPassword,
+//         maxLines: lineNo,
+//         style: TextStyle(color: inputColor),
+//         controller: textFieldController,
+//         decoration: InputDecoration(
+//           border: InputBorder.none,
+//           contentPadding: const EdgeInsets.only(
+//             left: 20,
+//             top: 12,
+//           ),
+//           focusedBorder: OutlineInputBorder(
+//             borderSide: const BorderSide(color: Color(0xFF2CC66D), width: 2.0),
+//             borderRadius: BorderRadius.circular(20.0),
+//           ),
+//           hintText: hintText,
+//           suffixIcon: Visibility(
+//             visible: isVisible,
+//             child: suffixIcon,
+//           ),
+//           hintStyle: TextStyle(
+//             fontSize: 16,
+//             color: Color(0xFF2CC66D),
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }

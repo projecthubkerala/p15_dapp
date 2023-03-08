@@ -42,7 +42,7 @@ class LoginScreen extends StatelessWidget {
                               width: 20,
                             ),
                             Text(
-                              "Email",
+                              "Phone Number",
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white,
@@ -60,8 +60,8 @@ class LoginScreen extends StatelessWidget {
                           ],
                         ),
                         CustomTextField(
-                          textFieldController: _emailController,
-                          hintText: 'Email',
+                          // textFieldController: _emailController,
+                          hintText: 'Phone Number',
                         ),
                         const SizedBox(height: 10),
                         Row(
@@ -89,7 +89,7 @@ class LoginScreen extends StatelessWidget {
                         ),
                         CustomTextField(
                           isPassword: true,
-                          textFieldController: _passwordController,
+                          // textFieldController: _passwordController,
                           hintText: 'Password',
                           isVisible: true,
                           suffixIcon: const Icon(
@@ -181,7 +181,7 @@ class LoginScreen extends StatelessWidget {
 class CustomTextField extends StatelessWidget {
   const CustomTextField({
     super.key,
-    required this.textFieldController,
+    // required this.textFieldController,
     this.isVisible = false,
     this.suffixIcon = const Icon(Icons.ac_unit),
     this.hintText = '',
@@ -191,7 +191,7 @@ class CustomTextField extends StatelessWidget {
     this.inputColor = Colors.white,
   });
 
-  final TextEditingController textFieldController;
+  // final TextEditingController textFieldController;
   final bool isVisible;
   final Icon suffixIcon;
   final String hintText;
@@ -213,7 +213,7 @@ class CustomTextField extends StatelessWidget {
         obscureText: isPassword,
         maxLines: lineNo,
         style: TextStyle(color: inputColor),
-        controller: textFieldController,
+        // controller: textFieldController,
         decoration: InputDecoration(
           border: InputBorder.none,
           contentPadding: const EdgeInsets.only(

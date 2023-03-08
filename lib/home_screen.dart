@@ -85,19 +85,19 @@ class _HomeScreenState extends State<HomeScreen> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     TextField(
-                      controller: titleController,
+                      // controller: titleController,
                       decoration: const InputDecoration(
                         hintText: 'Enter name',
                       ),
                     ),
                     TextField(
-                      controller: descriptionController,
+                      // controller: descriptionController,
                       decoration: const InputDecoration(
                         hintText: 'Enter Party',
                       ),
                     ),
                     TextField(
-                      controller: descriptionController,
+                      // controller: descriptionController,
                       decoration: const InputDecoration(
                         hintText: 'Enter address',
                       ),
