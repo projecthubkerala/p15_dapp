@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:notes_app/admin/home.dart';
 import 'package:notes_app/home_screen.dart';
 import 'package:notes_app/login.dart';
 import 'package:notes_app/user/user_home_page.dart';
@@ -13,10 +14,10 @@ class SignupScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Color(0xFF151619),
+        backgroundColor: const Color(0xFF151619),
         body: ListView(
           children: [
-            SizedBox(
+            const SizedBox(
               height: 150,
             ),
             const Center(
@@ -25,7 +26,7 @@ class SignupScreen extends StatelessWidget {
               style: TextStyle(
                   fontSize: 24, color: Colors.white, fontWeight: FontWeight.w600),
             )),
-            SizedBox(
+            const SizedBox(
               height: 50,
             ),
             Padding(
@@ -59,7 +60,7 @@ class SignupScreen extends StatelessWidget {
                             ),
                           ],
                         ),
-                        CustomTextField(
+                        const CustomTextField(
                           // textFieldController: _emailController,
                           hintText: 'Phone Number',
                         ),
@@ -87,12 +88,12 @@ class SignupScreen extends StatelessWidget {
                             ),
                           ],
                         ),
-                        CustomTextField(
+                        const CustomTextField(
                           isPassword: true,
                           // textFieldController: _passwordController,
                           hintText: 'Password',
                           isVisible: true,
-                          suffixIcon: const Icon(
+                          suffixIcon: Icon(
                             Icons.visibility_off,
                             color: Colors.grey,
                             size: 22,
@@ -121,12 +122,12 @@ class SignupScreen extends StatelessWidget {
                             ),
                           ],
                         ),
-                        CustomTextField(
+                        const CustomTextField(
                           isPassword: true,
                           // textFieldController: _passwordController,
                           hintText: 'Confirem Password',
                           isVisible: true,
-                          suffixIcon: const Icon(
+                          suffixIcon: Icon(
                             Icons.visibility_off,
                             color: Colors.grey,
                             size: 22,
@@ -155,7 +156,7 @@ class SignupScreen extends StatelessWidget {
                             ),
                           ],
                         ),
-                        CustomTextField(
+                        const CustomTextField(
                           // textFieldController: _emailController,
                           hintText: 'Enater your name',
                         ),
@@ -183,12 +184,12 @@ class SignupScreen extends StatelessWidget {
                             ),
                           ],
                         ),
-                        CustomTextField(
+                        const CustomTextField(
                           isPassword: true,
                           // textFieldController: _passwordController,
                           hintText: 'Adhar Number',
                           isVisible: true,
-                          suffixIcon: const Icon(
+                          suffixIcon: Icon(
                             Icons.visibility_off,
                             color: Colors.grey,
                             size: 22,

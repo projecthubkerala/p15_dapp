@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
-import 'package:notes_app/user/candidate_detaild.dart';
-import 'package:notes_app/user/result.dart';
+import 'package:notes_app/admin/result.dart';
+import 'package:notes_app/admin/see_all_voters.dart';
+
+
 import 'package:notes_app/user/vote_now.dart';
 
 class UserHomaPage extends StatelessWidget {
@@ -28,7 +30,7 @@ class UserHomaPage extends StatelessWidget {
             InkWell(
               onTap: () {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const CommingSoon()));
+                    MaterialPageRoute(builder: (context) => const VoteNow()));
               },
               child: Container(
                 decoration: BoxDecoration(
@@ -48,7 +50,7 @@ class UserHomaPage extends StatelessWidget {
             InkWell(
               onTap: () {
                 Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => const Result()));
+                    context, MaterialPageRoute(builder: (context) => const Result(isAdmin: false,)));
               },
               child: Container(
                 decoration: BoxDecoration(
@@ -68,7 +70,7 @@ class UserHomaPage extends StatelessWidget {
             InkWell(
               onTap: () {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const CandidateDetails()));
+                    MaterialPageRoute(builder: (context) => const VotersList(isAdmin: false,)));
               },
               child: Container(
                 decoration: BoxDecoration(
