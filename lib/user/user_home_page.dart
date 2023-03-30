@@ -3,6 +3,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:notes_app/admin/result.dart';
 import 'package:notes_app/admin/see_all_voters.dart';
+import 'package:notes_app/user/candidate.dart';
 
 
 import 'package:notes_app/user/vote_now.dart';
@@ -70,7 +71,7 @@ class UserHomaPage extends StatelessWidget {
             InkWell(
               onTap: () {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const VotersList(isAdmin: false,)));
+                    MaterialPageRoute(builder: (context) => const CommingSoon()));
               },
               child: Container(
                 decoration: BoxDecoration(
