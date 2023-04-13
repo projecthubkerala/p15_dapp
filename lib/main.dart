@@ -1,17 +1,23 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:notes_app/admin/home.dart';
+import 'package:notes_app/helper/firebaseaut.dart';
 import 'package:notes_app/home_screen.dart';
 import 'package:notes_app/login.dart';
 import 'package:notes_app/blockchain_services.dart';
+import 'package:notes_app/user/signup.dart';
+import 'package:notes_app/user/user_home_page.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 
 import 'firebase_options.dart';
 
 Future<void> main() async {
-    WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
-);
+  );
   runApp(
     ChangeNotifierProvider(
       create: (context) => BlockchainServices(),
@@ -20,8 +26,64 @@ Future<void> main() async {
   );
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  final _helper = Helper();
+
+  bool isuserloggedin = false;
+  bool isadmin = false;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    init();
+    checkpermission();
+    super.initState();
+  }
+
+  void checkpermission() async {
+    var status = await Permission.storage.status.isGranted;
+    if (!status) {
+      await Permission.storage.request();
+    }
+  }
+
+  void init() async {
+    final result = await _helper.isUsersigned();
+    if (result == true) {
+      final usercred = await _helper.getUserCredentials();
+      print("userlogin email : ${usercred!.email}");
+      //check admin
+      final QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+          .collection('user')
+          .where('email', isEqualTo: usercred.email)
+          .where('isAdmin', isEqualTo: true)
+          .get();
+      if (querySnapshot.docs.isNotEmpty) {
+        setState(() {
+          print("user is a admin");
+          isadmin = true;
+        });
+      } else {
+        setState(() {
+          print("user is a not admin");
+
+          isadmin = false;
+        });
+      }
+    }
+    setState(() {
+      print("userlogin status : ${result}");
+
+      isuserloggedin = result;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +93,11 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         useMaterial3: true,
       ),
-      home: LoginScreen(),
+      home: isuserloggedin
+          ? isadmin
+              ? HomeScreen()
+              : UserHomaPage()
+          : SignupScreen(),
     );
   }
 }

@@ -4,14 +4,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:notes_app/admin/home.dart';
-import 'package:notes_app/admin/login.dart';
 import 'package:notes_app/helper/firebaseaut.dart';
 import 'package:notes_app/home_screen.dart';
 import 'package:notes_app/user/signup.dart';
 import 'package:notes_app/user/user_home_page.dart';
 
-class LoginScreen extends StatelessWidget {
-  LoginScreen({super.key});
+class AdminLogin extends StatelessWidget {
+  AdminLogin({super.key});
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _globalKey1 = GlobalKey<FormState>();
@@ -26,7 +25,7 @@ class LoginScreen extends StatelessWidget {
             ),
             const Center(
                 child: Text(
-              'Login in to your account',
+              'Login in to your Admin account',
               style: TextStyle(
                   fontSize: 24,
                   color: Colors.white,
@@ -118,7 +117,7 @@ class LoginScreen extends StatelessWidget {
                         onPressed: () {
                           final _helper = Helper();
                           try {
-                            _helper.firebaselogin(
+                            _helper.firebaseAdminlogin(
                                 email: _emailController.text,
                                 context: context,
                                 password: _passwordController.text);
@@ -138,27 +137,6 @@ class LoginScreen extends StatelessWidget {
                               color: Colors.white),
                         ),
                       )),
-                  Column(
-                    children: [
-                      const SizedBox(height: 10),
-                      Visibility(
-                        visible: true,
-                        child: TextButton(
-                            onPressed: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => AdminLogin()));
-                            },
-                            child: const Text(
-                              'Admin? Login',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xFF2CC66D),
-                                fontSize: 15,
-                              ),
-                            )),
-                      ),
-                    ],
-                  ),
                   const SizedBox(height: 20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,

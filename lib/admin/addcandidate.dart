@@ -7,23 +7,48 @@ import 'package:notes_app/helper/firebaseaut.dart';
 import 'package:notes_app/helper/firestore.dart';
 import 'package:provider/provider.dart';
 
-class AddElection extends StatefulWidget {
-  const AddElection({super.key});
+class AddCandidate extends StatefulWidget {
+  final String electioId;
+
+  const AddCandidate({super.key, required this.electioId});
 
   @override
-  State<AddElection> createState() => _AddElectionState();
+  State<AddCandidate> createState() => _AddCandidateState();
 }
 
-class _AddElectionState extends State<AddElection> {
+class _AddCandidateState extends State<AddCandidate> {
   final TextEditingController titleController = TextEditingController();
-  final TextEditingController _dateController = TextEditingController();
+  final TextEditingController _agecontroller = TextEditingController();
+  final TextEditingController _partyController = TextEditingController();
   DateTime selecteddate = DateTime(2023);
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    // init();
+  }
+
+  Future<void> init() async {
+    QuerySnapshot snashot = await FirebaseFirestore.instance
+        .collection('Elections')
+        .doc(widget.electioId)
+        .collection('candidates')
+        .get();
+    if (snashot.docs.isEmpty) {
+      await FirebaseFirestore.instance
+          .collection('Elections')
+          .doc(widget.electioId)
+          .collection("candidates")
+          .add({});
+    }
+  }
 
   @override
   void dispose() {
     super.dispose();
     titleController.dispose();
-    _dateController.dispose();
+    _partyController.dispose();
   }
 
   @override
@@ -31,13 +56,16 @@ class _AddElectionState extends State<AddElection> {
     // var notesServices = context.watch<BlockchainServices>();
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Add Election'),
+        title: const Text('Add candidate'),
       ),
       body: Container(
         height: 500,
         child: StreamBuilder<QuerySnapshot>(
-            stream:
-                FirebaseFirestore.instance.collection('Elections').snapshots(),
+            stream: FirebaseFirestore.instance
+                .collection('Elections')
+                .doc(widget.electioId)
+                .collection('candidates')
+                .snapshots(),
             builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
               if (snapshot.hasError) {
                 return Text('Something went wrong');
@@ -48,6 +76,7 @@ class _AddElectionState extends State<AddElection> {
                   child: CircularProgressIndicator(),
                 );
               }
+
               return ListView.builder(
                 itemCount: snapshot.data!.docs.length,
                 itemBuilder: (context, index) {
@@ -55,15 +84,8 @@ class _AddElectionState extends State<AddElection> {
                     title: Text(
                       snapshot.data!.docs[index]['name'],
                     ),
-                    subtitle: Text(
-                        "Date : ${snapshot.data!.docs[index]['date'].toDate()}"),
-                    trailing: IconButton(
-                      icon: const Icon(
-                        Icons.delete,
-                        color: Colors.red,
-                      ),
-                      onPressed: () {},
-                    ),
+                    trailing: Text("${snapshot.data!.docs[index]['party']}"),
+                    subtitle: Text("Age: ${snapshot.data!.docs[index]['age']}"),
                   );
                 },
               );
@@ -76,42 +98,29 @@ class _AddElectionState extends State<AddElection> {
             context: context,
             builder: (context) {
               return AlertDialog(
-                title: const Text('New Voter'),
+                title: const Text('New Candidate'),
                 content: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     TextField(
                       controller: titleController,
                       decoration: const InputDecoration(
-                        hintText: 'Enter name Of election',
+                        hintText: 'Enter name Of candidate',
                       ),
                     ),
-                    TextFormField(
-                      controller: _dateController,
-                      decoration: InputDecoration(
-                        labelText: 'Date',
-                        suffixIcon: GestureDetector(
-                          onTap: () async {
-                            // Show a date picker dialog
-                            DateTime? selectedDate = await showDatePicker(
-                              context: context,
-                              initialDate: DateTime.now(),
-                              firstDate: DateTime(1900),
-                              lastDate: DateTime(2100),
-                            );
+                    TextField(
+                      controller: _agecontroller,
+                      decoration: const InputDecoration(
+                        hintText: 'Age',
+                      ),
+                    ),
+                    TextField(
+                      controller: _partyController,
+                      decoration: const InputDecoration(
+                        hintText: 'Party',
+                      ),
+                    ),
 
-                            // Update the text field with the selected date
-                            if (selectedDate != null) {
-                              _dateController.text = selectedDate.toString();
-                              setState(() {
-                                selecteddate = selectedDate;
-                              });
-                            }
-                          },
-                          child: Icon(Icons.calendar_today),
-                        ),
-                      ),
-                    ),
                     // TextField(
                     //   // controller: descriptionController,
                     //   decoration: const InputDecoration(
@@ -124,8 +133,11 @@ class _AddElectionState extends State<AddElection> {
                   TextButton(
                     onPressed: () async {
                       final _helper = FirestoreHelper();
-                      await _helper.addElection(
-                          name: titleController.text, date: selecteddate);
+                      await _helper.addCandidate(
+                          electionID: widget.electioId,
+                          party: _partyController.text,
+                          name: titleController.text,
+                          age: _agecontroller.text);
                       Navigator.of(context).pop();
                     },
                     child: const Text('Add'),

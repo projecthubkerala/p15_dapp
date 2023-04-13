@@ -1,10 +1,14 @@
-// ignore_for_file: prefer_const_constructors
+import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_image_viewer/easy_image_viewer.dart';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:notes_app/models/user.dart';
 
 class VotersList extends StatefulWidget {
   final bool isAdmin;
-  const VotersList({Key? key , required this.isAdmin}) : super(key: key);
+  const VotersList({Key? key, required this.isAdmin}) : super(key: key);
 
   @override
   State<VotersList> createState() => _VotersListState();
@@ -17,24 +21,60 @@ class _VotersListState extends State<VotersList> {
         appBar: AppBar(
           title: const Text('Voters List '),
         ),
-        body: ListView(
-          children:  [
-            User(isAdmin: widget.isAdmin,),
-            User(isAdmin: widget.isAdmin,),
-            User(isAdmin: widget.isAdmin,),
-            User(isAdmin: widget.isAdmin,),
-        
-          ],
-        ));
+        body: StreamBuilder<QuerySnapshot>(
+            stream: FirebaseFirestore.instance.collection('user').snapshots(),
+            builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+              if (snapshot.hasError) {
+                return Text('Something went wrong');
+              }
+
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+
+              // List<FirebaseUser> users = snapshot.data!.docs
+              //     .map((document) =>
+              //         FirebaseUser.fromMap(document.data()))
+              // .toList();
+              return ListView.builder(
+                itemCount: snapshot.data!.docs.length,
+                itemBuilder: (context, index) => User(
+                  isAdmin: snapshot.data!.docs[index]['isAproved'],
+                  name: snapshot.data!.docs[index]['name'],
+                  adhar: snapshot.data!.docs[index]['adhar'],
+                  email: snapshot.data!.docs[index]['email'],
+                  img_url: snapshot.data!.docs[index]['imgurl'] ?? "",
+                  onpressed: () {
+                    String id = snapshot.data!.docs[index].id;
+                    FirebaseFirestore.instance
+                        .collection('user')
+                        .doc(id)
+                        .update({'isAproved': true});
+                  },
+                ),
+              );
+            }));
   }
 }
 
 class User extends StatelessWidget {
   final bool isAdmin;
-  const User({
-    super.key,
-    required this.isAdmin,
-  });
+  final String name;
+  final String adhar;
+  final String email;
+  final String img_url;
+  final void Function()? onpressed;
+
+  const User(
+      {super.key,
+      required this.isAdmin,
+      required this.img_url,
+      required this.name,
+      required this.adhar,
+      required this.email,
+      required this.onpressed});
 
   @override
   Widget build(BuildContext context) {
@@ -45,37 +85,57 @@ class User extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
       ),
       child: ListTile(
-        title: const Text('Name: Rahul'),
-        subtitle: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: const [
-            Text('Age : 20'),
-            Text('Address : 123, abc street, xyz city'),
-            Text('Phone : 1234567890'),
-            Text('Adhar : 1234567890'),
-          ],
+        title: Text('Name: ${name}'),
+        subtitle: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text('Email : ${email}'),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text('Adhar : ${adhar}'),
+              ),
+              SizedBox(
+                  height: 30,
+                  child: ElevatedButton(
+                      onPressed: () async {
+                        final imageProvider = Image.network(img_url).image;
+                        showImageViewer(context, imageProvider,
+                            onViewerDismissed: () {
+                          print("dismissed");
+                        });
+                      },
+                      child: Text("View adhar"))), // Text('Phone : ${}'),
+            ],
+          ),
         ),
         trailing: Visibility(
-          visible: isAdmin,
-          child: Column(
-            children: [
-              Expanded(
+          visible: !isAdmin,
+          child: Container(
+            height: double.infinity,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                SizedBox(
+                    height: 30,
+                    child: ElevatedButton(
+                        onPressed: onpressed, child: Text("Aprove"))),
+                SizedBox(
+                  height: 10,
                   child: IconButton(
-                onPressed: () {},
-                icon: const Icon(
-                  Icons.check_box,
-                  color: Colors.white,
+                    onPressed: () {},
+                    icon: const Icon(
+                      Icons.delete,
+                      color: Colors.red,
+                    ),
+                  ),
                 ),
-              )),
-              Expanded(
-                  child: IconButton(
-                onPressed: () {},
-                icon: const Icon(
-                  Icons.delete,
-                  color: Colors.red,
-                ),
-              )),
-            ],
+              ],
+            ),
           ),
         ),
       ),
