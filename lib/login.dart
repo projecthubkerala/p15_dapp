@@ -14,10 +14,10 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Color(0xFF151619),
+        backgroundColor: const Color(0xFF151619),
         body: ListView(
           children: [
-            SizedBox(
+            const SizedBox(
               height: 150,
             ),
             const Center(
@@ -26,7 +26,7 @@ class LoginScreen extends StatelessWidget {
               style: TextStyle(
                   fontSize: 24, color: Colors.white, fontWeight: FontWeight.w600),
             )),
-            SizedBox(
+            const SizedBox(
               height: 50,
             ),
             Padding(
@@ -35,72 +35,70 @@ class LoginScreen extends StatelessWidget {
                 children: [
                   Form(
                       key: _globalKey1,
-                      child:
-                          Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                        Row(
-                          children: const [
-                            SizedBox(
-                              width: 20,
+                      child:  Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Row(
+                              children: [
+                                SizedBox(
+                                  width: 20,
+                                ),
+                                Text(
+                                  "Phone Number",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                    fontSize: 15,
+                                  ),
+                                ),
+                                Text(
+                                  "*",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.red,
+                                    fontSize: 15,
+                                  ),
+                                ),
+                              ],
                             ),
-                            Text(
-                              "Phone Number",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                                fontSize: 15,
-                              ),
+                            CustomTextField(
+                              textFieldController: _emailController,
+                              hintText: 'Phone Number',
+                              inputType: TextInputType.phone,
                             ),
-                            Text(
-                              "*",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.red,
-                                fontSize: 15,
-                              ),
+                            const SizedBox(height: 10),
+                            const Row(
+                              children: [
+                                SizedBox(
+                                  width: 20,
+                                ),
+                                Text(
+                                  "Password",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                    fontSize: 15,
+                                  ),
+                                ),
+                                Text(
+                                  "*",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.red,
+                                    fontSize: 15,
+                                  ),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                        CustomTextField(
-                          // textFieldController: _emailController,
-                          hintText: 'Phone Number',
-                        ),
-                        const SizedBox(height: 10),
-                        Row(
-                          children: const [
-                            SizedBox(
-                              width: 20,
+                            CustomTextField(
+                              isPassword: true,
+                              textFieldController: _passwordController,
+                              hintText: 'Password',
+                              inputType: TextInputType.visiblePassword,
+                              isVisible: true,
+                         
                             ),
-                            Text(
-                              "Password",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                                fontSize: 15,
-                              ),
-                            ),
-                            Text(
-                              "*",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.red,
-                                fontSize: 15,
-                              ),
-                            ),
-                          ],
-                        ),
-                        CustomTextField(
-                          isPassword: true,
-                          // textFieldController: _passwordController,
-                          hintText: 'Password',
-                          isVisible: true,
-                          suffixIcon: const Icon(
-                            Icons.visibility_off,
-                            color: Colors.grey,
-                            size: 22,
-                          ),
-                        ),
-                        
-                      ])),
+                          ])),
                   const SizedBox(height: 20),
                   SizedBox(
                       height: 50,
@@ -182,7 +180,7 @@ class LoginScreen extends StatelessWidget {
 class CustomTextField extends StatelessWidget {
   const CustomTextField({
     super.key,
-    // required this.textFieldController,
+    required this.textFieldController,
     this.isVisible = false,
     this.suffixIcon = const Icon(Icons.ac_unit),
     this.hintText = '',
@@ -192,7 +190,7 @@ class CustomTextField extends StatelessWidget {
     this.inputColor = Colors.white,
   });
 
-  // final TextEditingController textFieldController;
+  final TextEditingController textFieldController;
   final bool isVisible;
   final Icon suffixIcon;
   final String hintText;
@@ -208,13 +206,13 @@ class CustomTextField extends StatelessWidget {
           20,
         ),
       ),
-      color: Color(0xFF1E1F23),
+      color: const Color(0xFF1E1F23),
       child: TextFormField(
         keyboardType: inputType,
         obscureText: isPassword,
         maxLines: lineNo,
         style: TextStyle(color: inputColor),
-        // controller: textFieldController,
+        controller: textFieldController,
         decoration: InputDecoration(
           border: InputBorder.none,
           contentPadding: const EdgeInsets.only(
@@ -230,7 +228,7 @@ class CustomTextField extends StatelessWidget {
             visible: isVisible,
             child: suffixIcon,
           ),
-          hintStyle: TextStyle(
+          hintStyle: const TextStyle(
             fontSize: 16,
             color: Color(0xFF2CC66D),
           ),

@@ -15,7 +15,7 @@ class _VotersListState extends State<VotersList> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Voters List'),
+          title: const Text('Voters List '),
         ),
         body: ListView(
           children:  [
@@ -23,10 +23,7 @@ class _VotersListState extends State<VotersList> {
             User(isAdmin: widget.isAdmin,),
             User(isAdmin: widget.isAdmin,),
             User(isAdmin: widget.isAdmin,),
-            User(isAdmin: widget.isAdmin,),
-            User(isAdmin: widget.isAdmin,),
-            User(isAdmin: widget.isAdmin,),
-            User(isAdmin: widget.isAdmin,),
+        
           ],
         ));
   }

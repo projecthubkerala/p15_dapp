@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:notes_app/admin/home.dart';
+import 'package:notes_app/auth.dart';
 import 'package:notes_app/home_screen.dart';
 import 'package:notes_app/login.dart';
 import 'package:notes_app/user/user_home_page.dart';
@@ -10,6 +11,9 @@ class SignupScreen extends StatelessWidget {
   SignupScreen({super.key});
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _passWordConfirmController = TextEditingController();
+  final _nameController = TextEditingController();
+  final _AsdharController = TextEditingController();
   final _globalKey1 = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
@@ -37,13 +41,13 @@ class SignupScreen extends StatelessWidget {
                       key: _globalKey1,
                       child:
                           Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                        Row(
-                          children: const [
+                        const Row(
+                          children: [
                             SizedBox(
                               width: 20,
                             ),
                             Text(
-                              "Phone Number",
+                              "Email",
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white,
@@ -60,13 +64,13 @@ class SignupScreen extends StatelessWidget {
                             ),
                           ],
                         ),
-                        const CustomTextField(
-                          // textFieldController: _emailController,
-                          hintText: 'Phone Number',
+                        CustomTextField(
+                          textFieldController: _emailController,
+                          hintText: 'Email',
                         ),
                         const SizedBox(height: 10),
-                        Row(
-                          children: const [
+                        const Row(
+                          children: [
                             SizedBox(
                               width: 20,
                             ),
@@ -88,19 +92,19 @@ class SignupScreen extends StatelessWidget {
                             ),
                           ],
                         ),
-                        const CustomTextField(
+                        CustomTextField(
                           isPassword: true,
-                          // textFieldController: _passwordController,
+                          textFieldController: _passwordController,
                           hintText: 'Password',
                           isVisible: true,
-                          suffixIcon: Icon(
+                          suffixIcon: const Icon(
                             Icons.visibility_off,
                             color: Colors.grey,
                             size: 22,
                           ),
                         ),
-                        Row(
-                          children: const [
+                        const Row(
+                          children: [
                             SizedBox(
                               width: 20,
                             ),
@@ -122,19 +126,19 @@ class SignupScreen extends StatelessWidget {
                             ),
                           ],
                         ),
-                        const CustomTextField(
+                        CustomTextField(
                           isPassword: true,
-                          // textFieldController: _passwordController,
+                          textFieldController: _passWordConfirmController,
                           hintText: 'Confirem Password',
                           isVisible: true,
-                          suffixIcon: Icon(
+                          suffixIcon: const Icon(
                             Icons.visibility_off,
                             color: Colors.grey,
                             size: 22,
                           ),
                         ),
-                        Row(
-                          children: const [
+                        const Row(
+                          children: [
                             SizedBox(
                               width: 20,
                             ),
@@ -156,13 +160,13 @@ class SignupScreen extends StatelessWidget {
                             ),
                           ],
                         ),
-                        const CustomTextField(
-                          // textFieldController: _emailController,
+                        CustomTextField(
+                          textFieldController: _nameController,
                           hintText: 'Enater your name',
                         ),
                         const SizedBox(height: 10),
-                        Row(
-                          children: const [
+                        const Row(
+                          children: [
                             SizedBox(
                               width: 20,
                             ),
@@ -184,12 +188,12 @@ class SignupScreen extends StatelessWidget {
                             ),
                           ],
                         ),
-                        const CustomTextField(
+                        CustomTextField(
                           isPassword: true,
-                          // textFieldController: _passwordController,
+                          textFieldController: _AsdharController,
                           hintText: 'Adhar Number',
                           isVisible: true,
-                          suffixIcon: Icon(
+                          suffixIcon: const Icon(
                             Icons.visibility_off,
                             color: Colors.grey,
                             size: 22,
@@ -208,8 +212,7 @@ class SignupScreen extends StatelessWidget {
                           side: const BorderSide(color: Color(0xFF2CC66D)),
                         ),
                         onPressed: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => const UserHomaPage()));
+                          signup(context);
                         },
                         child: const Text(
                           'Sign in',
@@ -271,6 +274,62 @@ class SignupScreen extends StatelessWidget {
             ),
           ],
         ));
+  }
+
+  signup(
+    BuildContext context,
+  ) {
+
+    if (_emailController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Email is required'),
+        ),
+      );
+      return;
+    } else if (_passwordController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Password is required'),
+        ),
+      );
+       return;
+    } else if (_passWordConfirmController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Confirm Password is required'),
+        ),
+      );
+       return;
+    } else if (_nameController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Name is required'),
+        ),
+      );
+       return;
+    } else if (_AsdharController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Adhar Number is required'),
+        ),
+      );
+       return;
+    } else if (_passwordController.text != _passWordConfirmController.text) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Password and Confirm Password must be same'),
+        ),
+      );
+       return;
+    } else {
+
+      Auth.signIn(email:_emailController.text , password: _passwordController.text);
+      Navigator.of(context).push(
+          MaterialPageRoute(builder: (context) => const UserHomaPage()));
+    }
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => const UserHomaPage()));
   }
 }
 // 

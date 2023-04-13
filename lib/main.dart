@@ -1,10 +1,17 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:notes_app/home_screen.dart';
 import 'package:notes_app/login.dart';
 import 'package:notes_app/blockchain_services.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+import 'firebase_options.dart';
+
+Future<void> main() async {
+    WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+);
   runApp(
     ChangeNotifierProvider(
       create: (context) => BlockchainServices(),

@@ -71,30 +71,30 @@ class BlockchainServices extends ChangeNotifier {
   }
 
   Future<void> fetchNotes() async {
-    List totalTaskList = await _web3cient.call(
-      contract: _deployedContract,
-      function: _noteCount,
-      params: [],
-    );
-
-    int totalTaskLen = totalTaskList[0].toInt();
-    votes.clear();
-    for (var i = 0; i < totalTaskLen; i++) {
-      var temp = await _web3cient.call(
-          contract: _deployedContract,
-          function: _notes,
-          params: [BigInt.from(i)]);
-      if (temp[1] != "") {
-        votes.add(
-          Voter(
-            id: (temp[0] as BigInt).toInt(),
-            title: temp[1],
-            description: temp[2],
-          ),
-        );
-      }
-    }
-    isLoading = false;
+//     List totalTaskList = await _web3cient.call(
+//       contract: _deployedContract,
+//       function: _noteCount,
+//       params: [],
+//     );
+// 
+//     int totalTaskLen = totalTaskList[0].toInt();
+//     votes.clear();
+//     for (var i = 0; i < totalTaskLen; i++) {
+//       var temp = await _web3cient.call(
+//           contract: _deployedContract,
+//           function: _notes,
+//           params: [BigInt.from(i)]);
+//       if (temp[1] != "") {
+//         votes.add(
+//           Voter(
+//             id: (temp[0] as BigInt).toInt(),
+//             title: temp[1],
+//             description: temp[2],
+//           ),
+//         );
+//       }
+//     }
+//     isLoading = false;
 
     notifyListeners();
   }
