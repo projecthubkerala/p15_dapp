@@ -193,7 +193,7 @@ class LoginScreen extends StatelessWidget {
   }
 }
 
-class CustomTextField extends StatelessWidget {
+class CustomTextField extends StatefulWidget {
   const CustomTextField({
     super.key,
     required this.textFieldController,
@@ -214,6 +214,14 @@ class CustomTextField extends StatelessWidget {
   final bool isPassword;
   final TextInputType inputType;
   final Color inputColor;
+
+  @override
+  State<CustomTextField> createState() => _CustomTextFieldState();
+}
+
+class _CustomTextFieldState extends State<CustomTextField> {
+  bool obsecure = true;
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -222,13 +230,13 @@ class CustomTextField extends StatelessWidget {
           20,
         ),
       ),
-      color: const Color(0xFF1E1F23),
+      color: Color(0xFF1E1F23),
       child: TextFormField(
-        keyboardType: inputType,
-        obscureText: isPassword,
-        maxLines: lineNo,
-        style: TextStyle(color: inputColor),
-        controller: textFieldController,
+        keyboardType: widget.inputType,
+        obscureText: obsecure && widget.isPassword,
+        maxLines: widget.lineNo,
+        style: TextStyle(color: widget.inputColor),
+        controller: widget.textFieldController,
         decoration: InputDecoration(
           border: InputBorder.none,
           contentPadding: const EdgeInsets.only(
@@ -239,12 +247,20 @@ class CustomTextField extends StatelessWidget {
             borderSide: const BorderSide(color: Color(0xFF2CC66D), width: 2.0),
             borderRadius: BorderRadius.circular(20.0),
           ),
-          hintText: hintText,
+          hintText: widget.hintText,
           suffixIcon: Visibility(
-            visible: isVisible,
-            child: suffixIcon,
+            visible: widget.isPassword,
+            child: IconButton(
+                onPressed: () {
+                  setState(() {
+                    obsecure = !obsecure;
+                  });
+                },
+                icon: obsecure
+                    ? Icon(Icons.visibility_off)
+                    : Icon(Icons.visibility)),
           ),
-          hintStyle: const TextStyle(
+          hintStyle: TextStyle(
             fontSize: 16,
             color: Color(0xFF2CC66D),
           ),

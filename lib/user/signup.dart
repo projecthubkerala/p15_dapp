@@ -161,7 +161,7 @@ class _SignupScreenState extends State<SignupScreen> {
                             CustomTextField(
                               isPassword: true,
                               textFieldController: _passWordConfirmController,
-                              hintText: 'Confirem Password',
+                              hintText: 'Confirm Password',
                               isVisible: true,
                               suffixIcon: const Icon(
                                 Icons.visibility_off,
@@ -221,15 +221,15 @@ class _SignupScreenState extends State<SignupScreen> {
                               ],
                             ),
                             CustomTextField(
-                              isPassword: true,
+                              isPassword: false,
                               textFieldController: _AsdharController,
-                              hintText: 'Adhar Number',
-                              isVisible: true,
-                              suffixIcon: const Icon(
-                                Icons.visibility_off,
-                                color: Colors.grey,
-                                size: 22,
-                              ),
+                              hintText: 'Adhar Number- 15 Digit',
+                              isVisible: false,
+                              // suffixIcon: const Icon(
+                              //   Icons.visibility_off,
+                              //   color: Colors.grey,
+                              //   size: 22,
+                              // ),
                             ),
                           ])),
                   const SizedBox(height: 10),
@@ -426,7 +426,7 @@ class _SignupScreenState extends State<SignupScreen> {
 }
 
 //
-class CustomTextField extends StatelessWidget {
+class CustomTextField extends StatefulWidget {
   const CustomTextField({
     super.key,
     required this.textFieldController,
@@ -447,6 +447,14 @@ class CustomTextField extends StatelessWidget {
   final bool isPassword;
   final TextInputType inputType;
   final Color inputColor;
+
+  @override
+  State<CustomTextField> createState() => _CustomTextFieldState();
+}
+
+class _CustomTextFieldState extends State<CustomTextField> {
+  bool obsecure = true;
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -457,11 +465,11 @@ class CustomTextField extends StatelessWidget {
       ),
       color: Color(0xFF1E1F23),
       child: TextFormField(
-        keyboardType: inputType,
-        obscureText: isPassword,
-        maxLines: lineNo,
-        style: TextStyle(color: inputColor),
-        controller: textFieldController,
+        keyboardType: widget.inputType,
+        obscureText: obsecure && widget.isPassword,
+        maxLines: widget.lineNo,
+        style: TextStyle(color: widget.inputColor),
+        controller: widget.textFieldController,
         decoration: InputDecoration(
           border: InputBorder.none,
           contentPadding: const EdgeInsets.only(
@@ -472,10 +480,18 @@ class CustomTextField extends StatelessWidget {
             borderSide: const BorderSide(color: Color(0xFF2CC66D), width: 2.0),
             borderRadius: BorderRadius.circular(20.0),
           ),
-          hintText: hintText,
+          hintText: widget.hintText,
           suffixIcon: Visibility(
-            visible: isVisible,
-            child: suffixIcon,
+            visible: widget.isPassword,
+            child: IconButton(
+                onPressed: () {
+                  setState(() {
+                    obsecure = !obsecure;
+                  });
+                },
+                icon: obsecure
+                    ? Icon(Icons.visibility_off)
+                    : Icon(Icons.visibility)),
           ),
           hintStyle: TextStyle(
             fontSize: 16,

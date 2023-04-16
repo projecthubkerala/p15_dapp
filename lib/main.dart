@@ -59,6 +59,11 @@ class _MyAppState extends State<MyApp> {
     if (result == true) {
       final usercred = await _helper.getUserCredentials();
       print("userlogin email : ${usercred!.email}");
+      setState(() {
+        print("userlogin status : ${result}");
+
+        isuserloggedin = result;
+      });
       //check admin
       final QuerySnapshot querySnapshot = await FirebaseFirestore.instance
           .collection('user')
@@ -78,11 +83,6 @@ class _MyAppState extends State<MyApp> {
         });
       }
     }
-    setState(() {
-      print("userlogin status : ${result}");
-
-      isuserloggedin = result;
-    });
   }
 
   @override
