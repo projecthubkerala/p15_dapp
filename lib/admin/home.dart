@@ -84,8 +84,17 @@ class _HomeScreenState extends State<HomeScreen> {
                 borderRadius: BorderRadius.circular(10),
               ),
               child: ListTile(
-                title: const Text('See all voters'),
-                trailing: const Icon(Icons.arrow_forward_ios),
+                title: const Text(
+                  'See all voters',
+                  style: TextStyle(
+                    color: Colors.white,
+                    // color: Colors.white,
+                  ),
+                ),
+                trailing: const Icon(
+                  Icons.arrow_forward_ios,
+                  color: Colors.white,
+                ),
                 onTap: () {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => VotersList(
@@ -101,8 +110,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 borderRadius: BorderRadius.circular(10),
               ),
               child: ListTile(
-                title: const Text('Add Election'),
-                trailing: const Icon(Icons.arrow_forward_ios),
+                title: const Text(
+                  'Add Election',
+                  style: TextStyle(color: Colors.white),
+                ),
+                trailing: const Icon(
+                  Icons.arrow_forward_ios,
+                  color: Colors.white,
+                ),
                 onTap: () {
                   Navigator.of(context).push(
                       MaterialPageRoute(builder: (context) => AddElection()));
@@ -116,14 +131,35 @@ class _HomeScreenState extends State<HomeScreen> {
                 borderRadius: BorderRadius.circular(10),
               ),
               child: ListTile(
-                title: const Text('Add Candidate'),
-                trailing: const Icon(Icons.arrow_forward_ios),
+                title: const Text(
+                  'Add Candidate',
+                  style: TextStyle(color: Colors.white),
+                ),
+                trailing: const Icon(
+                  Icons.arrow_forward_ios,
+                  color: Colors.white,
+                ),
                 onTap: () {
                   Navigator.of(context).push(
                       MaterialPageRoute(builder: (context) => ShowElections()));
                 },
               ),
             ),
+            // Container(
+            //   margin: const EdgeInsets.all(15),
+            //   decoration: BoxDecoration(
+            //     color: Colors.blue,
+            //     borderRadius: BorderRadius.circular(10),
+            //   ),
+            //   child: ListTile(
+            //     title: const Text('See all Elections'),
+            //     trailing: const Icon(Icons.arrow_forward_ios),
+            //     onTap: () {
+            //       Navigator.of(context).push(MaterialPageRoute(
+            //           builder: (context) => SeeAllElections()));
+            //     },
+            //   ),
+            // ),
             Container(
               margin: const EdgeInsets.all(15),
               decoration: BoxDecoration(
@@ -131,23 +167,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 borderRadius: BorderRadius.circular(10),
               ),
               child: ListTile(
-                title: const Text('See all Elections'),
-                trailing: const Icon(Icons.arrow_forward_ios),
-                onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => SeeAllElections()));
-                },
-              ),
-            ),
-            Container(
-              margin: const EdgeInsets.all(15),
-              decoration: BoxDecoration(
-                color: Colors.blue,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: ListTile(
-                title: const Text('Results'),
-                trailing: const Icon(Icons.arrow_forward_ios),
+                title: const Text(
+                  'Results',
+                  style: TextStyle(color: Colors.white),
+                ),
+                trailing: const Icon(
+                  Icons.arrow_forward_ios,
+                  color: Colors.white,
+                ),
                 onTap: () {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => Result(

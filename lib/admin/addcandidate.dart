@@ -21,6 +21,7 @@ class _AddCandidateState extends State<AddCandidate> {
   final TextEditingController _agecontroller = TextEditingController();
   final TextEditingController _partyController = TextEditingController();
   DateTime selecteddate = DateTime(2023);
+  bool deleteLoading = false;
 
   @override
   void initState() {
@@ -84,8 +85,64 @@ class _AddCandidateState extends State<AddCandidate> {
                     title: Text(
                       snapshot.data!.docs[index]['name'],
                     ),
-                    trailing: Text("${snapshot.data!.docs[index]['party']}"),
-                    subtitle: Text("Age: ${snapshot.data!.docs[index]['age']}"),
+                    trailing: IconButton(
+                        onPressed: () async {
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                title: Text("Remove Candidate"),
+                                content: Text(
+                                    "Are you sure you want to remove ${snapshot.data!.docs[index]['name']}?"),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    child: Text("Cancel"),
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        deleteLoading = true;
+                                      });
+                                      // Remove the candidate from the database
+                                      FirebaseFirestore.instance
+                                          .collection('Elections')
+                                          .doc(widget.electioId)
+                                          .collection('candidates')
+                                          .doc(snapshot.data!.docs[index].id)
+                                          .delete()
+                                          .then((value) {
+                                        setState(() {
+                                          deleteLoading = false;
+                                        });
+                                      });
+                                      Navigator.pop(context);
+                                    },
+                                    child: deleteLoading
+                                        ? SizedBox(
+                                            height: 20,
+                                            width: 20,
+                                            child: CircularProgressIndicator())
+                                        : Text("Remove"),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        },
+                        icon: Icon(
+                          Icons.delete_outline_rounded,
+                          color: Colors.red,
+                        )),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("Age: ${snapshot.data!.docs[index]['age']}"),
+                        Text("${snapshot.data!.docs[index]['party']}"),
+                      ],
+                    ),
                   );
                 },
               );

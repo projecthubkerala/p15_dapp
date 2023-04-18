@@ -9,11 +9,22 @@ import 'package:notes_app/home_screen.dart';
 import 'package:notes_app/user/signup.dart';
 import 'package:notes_app/user/user_home_page.dart';
 
-class AdminLogin extends StatelessWidget {
+class AdminLogin extends StatefulWidget {
   AdminLogin({super.key});
+
+  @override
+  State<AdminLogin> createState() => _AdminLoginState();
+}
+
+class _AdminLoginState extends State<AdminLogin> {
+  bool is_buttonlogin = false;
+
   final _emailController = TextEditingController();
+
   final _passwordController = TextEditingController();
+
   final _globalKey1 = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -67,6 +78,7 @@ class AdminLogin extends StatelessWidget {
                               ],
                             ),
                             CustomTextField(
+                              isemail: true,
                               textFieldController: _emailController,
                               hintText: 'Email Address',
                               inputType: TextInputType.emailAddress,
@@ -115,12 +127,21 @@ class AdminLogin extends StatelessWidget {
                           side: const BorderSide(color: Color(0xFF2CC66D)),
                         ),
                         onPressed: () {
+                          setState(() {
+                            is_buttonlogin = true;
+                          });
                           final _helper = Helper();
                           try {
-                            _helper.firebaseAdminlogin(
-                                email: _emailController.text,
-                                context: context,
-                                password: _passwordController.text);
+                            _helper
+                                .firebaseAdminlogin(
+                                    email: _emailController.text,
+                                    context: context,
+                                    password: _passwordController.text)
+                                .then((value) {
+                              setState(() {
+                                is_buttonlogin = false;
+                              });
+                            });
                           } on FirebaseAuthException catch (e) {
                             print(e);
                             // ScaffoldMessenger
@@ -129,13 +150,15 @@ class AdminLogin extends StatelessWidget {
                           // Navigator.of(context).push(MaterialPageRoute(
                           //     builder: (context) => const UserHomaPage()));
                         },
-                        child: const Text(
-                          'Log in',
-                          style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white),
-                        ),
+                        child: is_buttonlogin
+                            ? CircularProgressIndicator()
+                            : const Text(
+                                'Log in',
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white),
+                              ),
                       )),
                   const SizedBox(height: 20),
                   Row(
@@ -180,6 +203,7 @@ class CustomTextField extends StatefulWidget {
     this.hintText = '',
     this.lineNo = 1,
     this.isPassword = false,
+    this.isemail = false,
     this.inputType = TextInputType.streetAddress,
     this.inputColor = Colors.white,
   });
@@ -190,6 +214,7 @@ class CustomTextField extends StatefulWidget {
   final String hintText;
   final int lineNo;
   final bool isPassword;
+  final bool isemail;
   final TextInputType inputType;
   final Color inputColor;
 
@@ -210,6 +235,11 @@ class _CustomTextFieldState extends State<CustomTextField> {
       ),
       color: Color(0xFF1E1F23),
       child: TextFormField(
+        autofillHints: widget.isPassword
+            ? [AutofillHints.password]
+            : widget.isemail
+                ? [AutofillHints.email]
+                : null,
         keyboardType: widget.inputType,
         obscureText: obsecure && widget.isPassword,
         maxLines: widget.lineNo,

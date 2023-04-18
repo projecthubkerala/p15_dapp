@@ -26,6 +26,7 @@ class FirestoreHelper {
             'adhar': adhar,
             'isAproved': isAproved,
             'isAdmin': isadmin,
+            'imgurl': ""
             // 'img_url': imgurl
           }, SetOptions(merge: true))
           .then((value) => print("Document added successfully"))
@@ -37,16 +38,14 @@ class FirestoreHelper {
 
   Future<void> addElection({
     required String name,
-    required DateTime date,
+    required DateTime start_date,
+    required DateTime end_date,
   }) async {
     try {
       final _ref = FirebaseFirestore.instance.collection('Elections');
 
       await _ref.add(
-        {
-          'name': name,
-          'date': date,
-        },
+        {'name': name, 'start_date': start_date, "end_date": end_date},
       ).catchError((error) => print("Failed to add document: $error"));
     } on FirebaseException catch (e) {
       print(e.message);

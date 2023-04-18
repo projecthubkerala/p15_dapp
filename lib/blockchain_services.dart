@@ -17,7 +17,7 @@ class BlockchainServices extends ChangeNotifier {
   bool isLoading = true;
 
   final String _privatekey =
-      '0xd27839b74cb0df85635d98abbeea33e753092d6e96c928f0997c0f545fcff4ac';
+      '0x29c023Ad2C4d5DBa8F0A84005a6C89BA2E58B66dFC13940845721Fed97E28976';
   late Web3Client _web3cient;
 // we use wallnetconnection to connect to the blockchain
 // use metamask
@@ -42,7 +42,7 @@ class BlockchainServices extends ChangeNotifier {
   late EthereumAddress _contractAddress;
   Future<void> getABI() async {
     String abiFile =
-        await rootBundle.loadString('build/contracts/NotesContract.json');
+        await rootBundle.loadString('build/contracts/MetaCoin.json');
     var jsonABI = jsonDecode(abiFile);
     _abiCode =
         ContractAbi.fromJson(jsonEncode(jsonABI['abi']), 'NotesContract');
@@ -76,7 +76,7 @@ class BlockchainServices extends ChangeNotifier {
 //       function: _noteCount,
 //       params: [],
 //     );
-// 
+//
 //     int totalTaskLen = totalTaskList[0].toInt();
 //     votes.clear();
 //     for (var i = 0; i < totalTaskLen; i++) {

@@ -1,7 +1,9 @@
 import 'dart:developer';
 
 import 'package:file_picker/file_picker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:notes_app/admin/home.dart';
 import 'package:notes_app/admin/login.dart';
 import 'package:notes_app/auth.dart';
@@ -28,6 +30,7 @@ class _SignupScreenState extends State<SignupScreen> {
   final _nameController = TextEditingController();
 
   final _AsdharController = TextEditingController();
+  bool is_buttonlogin = false;
 
   final _globalKey1 = GlobalKey<FormState>();
   String filePath = "";
@@ -97,6 +100,8 @@ class _SignupScreenState extends State<SignupScreen> {
                               ],
                             ),
                             CustomTextField(
+                              is_Name: false,
+                              is_Adhar: false,
                               textFieldController: _emailController,
                               hintText: 'Email',
                             ),
@@ -125,6 +130,8 @@ class _SignupScreenState extends State<SignupScreen> {
                               ],
                             ),
                             CustomTextField(
+                              is_Adhar: false,
+                              is_Name: false,
                               isPassword: true,
                               textFieldController: _passwordController,
                               hintText: 'Password',
@@ -159,6 +166,8 @@ class _SignupScreenState extends State<SignupScreen> {
                               ],
                             ),
                             CustomTextField(
+                              is_Name: false,
+                              is_Adhar: false,
                               isPassword: true,
                               textFieldController: _passWordConfirmController,
                               hintText: 'Confirm Password',
@@ -193,8 +202,10 @@ class _SignupScreenState extends State<SignupScreen> {
                               ],
                             ),
                             CustomTextField(
+                              is_Name: true,
+                              is_Adhar: false,
                               textFieldController: _nameController,
-                              hintText: 'Enater your name',
+                              hintText: 'Enter your name',
                             ),
                             const SizedBox(height: 10),
                             Row(
@@ -221,9 +232,12 @@ class _SignupScreenState extends State<SignupScreen> {
                               ],
                             ),
                             CustomTextField(
+                              is_Adhar: true,
+                              is_Name: false,
+
                               isPassword: false,
                               textFieldController: _AsdharController,
-                              hintText: 'Adhar Number- 15 Digit',
+                              hintText: 'Adhar Number- 12 Digit',
                               isVisible: false,
                               // suffixIcon: const Icon(
                               //   Icons.visibility_off,
@@ -239,7 +253,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         width: 20,
                       ),
                       Text(
-                        "Prof of your Adhar (image file)",
+                        "Proof of your Adhar (image file)",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
@@ -291,13 +305,15 @@ class _SignupScreenState extends State<SignupScreen> {
                         onPressed: () {
                           signup(context);
                         },
-                        child: const Text(
-                          'Sign in',
-                          style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white),
-                        ),
+                        child: is_buttonlogin
+                            ? CircularProgressIndicator()
+                            : const Text(
+                                'Sign in',
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white),
+                              ),
                       )),
                   Column(
                     children: [
@@ -391,10 +407,10 @@ class _SignupScreenState extends State<SignupScreen> {
         ),
       );
       return;
-    } else if (_AsdharController.text.length != 15) {
+    } else if (_AsdharController.text.length != 12) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Adhar should be 15 numbers'),
+          content: Text('Adhar should be 12 numbers'),
         ),
       );
     } else if (_passwordController.text != _passWordConfirmController.text) {
@@ -404,6 +420,14 @@ class _SignupScreenState extends State<SignupScreen> {
         ),
       );
       return;
+    } else if (!RegExp(r'^(?=.*[0-9])(?=.*[a-zA-Z]).{6,}$')
+        .hasMatch(_passwordController.text)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+              'Password must Contain Least 6 characters and Letters and Digits'),
+        ),
+      );
     } else if (filePath == "") {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -411,24 +435,40 @@ class _SignupScreenState extends State<SignupScreen> {
         ),
       );
     } else {
-      final _helperauth = Helper();
-      _helperauth.firebasecreateuser(
-          // file_name: filePath,
-          file_path: filePath,
-          email: _emailController.text,
-          password: _passwordController.text,
-          adhar: _AsdharController.text,
-          name: _nameController.text);
-      Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) => const NotVerified()));
+      try {
+        setState(() {
+          is_buttonlogin = true;
+        });
+        final _helperauth = Helper();
+        _helperauth
+            .firebasecreateuser(
+                // file_name: filePath,
+                file_path: filePath,
+                email: _emailController.text,
+                password: _passwordController.text,
+                adhar: _AsdharController.text,
+                name: _nameController.text)
+            .then((value) {
+          setState(() {
+            is_buttonlogin = false;
+          });
+        });
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (context) => const NotVerified()));
+      } on FirebaseAuthException catch (e) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text(e.message.toString())));
+      }
     }
   }
 }
 
 //
 class CustomTextField extends StatefulWidget {
-  const CustomTextField({
+  CustomTextField({
     super.key,
+    required this.is_Adhar,
+    required this.is_Name,
     required this.textFieldController,
     this.isVisible = false,
     this.suffixIcon = const Icon(Icons.ac_unit),
@@ -447,6 +487,8 @@ class CustomTextField extends StatefulWidget {
   final bool isPassword;
   final TextInputType inputType;
   final Color inputColor;
+  bool is_Adhar;
+  final bool is_Name;
 
   @override
   State<CustomTextField> createState() => _CustomTextFieldState();
@@ -465,6 +507,12 @@ class _CustomTextFieldState extends State<CustomTextField> {
       ),
       color: Color(0xFF1E1F23),
       child: TextFormField(
+        inputFormatters: widget.is_Name
+            ? [
+                FilteringTextInputFormatter.deny(RegExp(r'[^\w\s]+')),
+              ]
+            : null,
+        maxLength: widget.is_Adhar ? 12 : null,
         keyboardType: widget.inputType,
         obscureText: obsecure && widget.isPassword,
         maxLines: widget.lineNo,

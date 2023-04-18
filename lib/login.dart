@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:http/http.dart';
 import 'package:notes_app/admin/home.dart';
 import 'package:notes_app/admin/login.dart';
@@ -10,11 +11,22 @@ import 'package:notes_app/home_screen.dart';
 import 'package:notes_app/user/signup.dart';
 import 'package:notes_app/user/user_home_page.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   LoginScreen({super.key});
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
   final _emailController = TextEditingController();
+
   final _passwordController = TextEditingController();
+
   final _globalKey1 = GlobalKey<FormState>();
+
+  bool is_buttonlogin = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -116,12 +128,22 @@ class LoginScreen extends StatelessWidget {
                           side: const BorderSide(color: Color(0xFF2CC66D)),
                         ),
                         onPressed: () {
+                          setState(() {
+                            bool is_buttonlogin = true;
+                          });
                           final _helper = Helper();
+
                           try {
-                            _helper.firebaselogin(
-                                email: _emailController.text,
-                                context: context,
-                                password: _passwordController.text);
+                            _helper
+                                .firebaselogin(
+                                    email: _emailController.text,
+                                    context: context,
+                                    password: _passwordController.text)
+                                .then((value) {
+                              setState(() {
+                                bool is_buttonlogin = false;
+                              });
+                            });
                           } on FirebaseAuthException catch (e) {
                             print(e);
                             // ScaffoldMessenger
@@ -130,13 +152,15 @@ class LoginScreen extends StatelessWidget {
                           // Navigator.of(context).push(MaterialPageRoute(
                           //     builder: (context) => const UserHomaPage()));
                         },
-                        child: const Text(
-                          'Log in',
-                          style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white),
-                        ),
+                        child: is_buttonlogin
+                            ? CircularProgressIndicator()
+                            : const Text(
+                                'Log in',
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white),
+                              ),
                       )),
                   Column(
                     children: [
@@ -202,6 +226,7 @@ class CustomTextField extends StatefulWidget {
     this.hintText = '',
     this.lineNo = 1,
     this.isPassword = false,
+    this.isemail = false,
     this.inputType = TextInputType.streetAddress,
     this.inputColor = Colors.white,
   });
@@ -212,6 +237,7 @@ class CustomTextField extends StatefulWidget {
   final String hintText;
   final int lineNo;
   final bool isPassword;
+  final bool isemail;
   final TextInputType inputType;
   final Color inputColor;
 
@@ -232,6 +258,11 @@ class _CustomTextFieldState extends State<CustomTextField> {
       ),
       color: Color(0xFF1E1F23),
       child: TextFormField(
+        autofillHints: widget.isPassword
+            ? [AutofillHints.password]
+            : widget.isemail
+                ? [AutofillHints.username]
+                : null,
         keyboardType: widget.inputType,
         obscureText: obsecure && widget.isPassword,
         maxLines: widget.lineNo,

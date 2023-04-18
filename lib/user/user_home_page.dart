@@ -4,6 +4,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:notes_app/admin/result.dart';
 import 'package:notes_app/admin/see_all_voters.dart';
+import 'package:notes_app/config/color.dart';
 import 'package:notes_app/helper/firebaseaut.dart';
 import 'package:notes_app/user/candidate.dart';
 import 'package:notes_app/user/signup.dart';
@@ -16,8 +17,9 @@ class UserHomaPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: ColorCOnfig().secondary,
         appBar: AppBar(
-          backgroundColor: const Color(0xFF2CC66D),
+          backgroundColor: ColorCOnfig().secondary,
           title: const Text(
             "Home page",
             style: TextStyle(color: Colors.white),
@@ -62,8 +64,9 @@ class UserHomaPage extends StatelessWidget {
         body: GridView.count(
           crossAxisCount: 2,
           padding: const EdgeInsets.all(20.0),
-          mainAxisSpacing: 20,
-          crossAxisSpacing: 20,
+          mainAxisSpacing: 10,
+          crossAxisSpacing: 10,
+          childAspectRatio: .8,
           children: <Widget>[
             InkWell(
               onTap: () {
@@ -109,28 +112,28 @@ class UserHomaPage extends StatelessWidget {
                 child: Center(child: Text('Result')),
               ),
             ),
-            InkWell(
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const CommingSoon()));
-              },
-              child: Container(
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20),
-                    boxShadow: [
-                      BoxShadow(
-                          color: Colors.black.withOpacity(0.2),
-                          blurRadius: 10,
-                          spreadRadius: 5)
-                    ]),
-                height: 20,
-                // color: Colors.red,
-                child: Center(child: Text('See Condidate details')),
-              ),
-            ),
+            // InkWell(
+            //   onTap: () {
+            //     Navigator.push(
+            //         context,
+            //         MaterialPageRoute(
+            //             builder: (context) => const CommingSoon()));
+            //   },
+            //   child: Container(
+            //     decoration: BoxDecoration(
+            //         color: Colors.white,
+            //         borderRadius: BorderRadius.circular(20),
+            //         boxShadow: [
+            //           BoxShadow(
+            //               color: Colors.black.withOpacity(0.2),
+            //               blurRadius: 10,
+            //               spreadRadius: 5)
+            //         ]),
+            //     height: 20,
+            //     // color: Colors.red,
+            //     child: Center(child: Text('See Candidate details')),
+            //   ),
+            // ),
           ],
         ));
   }

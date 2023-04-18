@@ -80,12 +80,16 @@ class User extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.all(15),
+      padding: const EdgeInsets.all(8),
       decoration: BoxDecoration(
-        color: Colors.cyan,
+        color: Colors.blue,
         borderRadius: BorderRadius.circular(10),
       ),
       child: ListTile(
-        title: Text('Name: ${name}'),
+        title: Text(
+          'Name: ${name}',
+          style: TextStyle(color: Colors.white),
+        ),
         subtitle: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
@@ -93,11 +97,17 @@ class User extends StatelessWidget {
             children: [
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Text('Email : ${email}'),
+                child: Text(
+                  'Email : ${email}',
+                  style: TextStyle(color: Colors.white),
+                ),
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Text('Adhar : ${adhar}'),
+                child: Text(
+                  'Adhar : ${adhar}',
+                  style: TextStyle(color: Colors.white),
+                ),
               ),
               SizedBox(
                   height: 30,
@@ -124,16 +134,16 @@ class User extends StatelessWidget {
                     height: 30,
                     child: ElevatedButton(
                         onPressed: onpressed, child: Text("Aprove"))),
-                SizedBox(
-                  height: 10,
-                  child: IconButton(
-                    onPressed: () {},
-                    icon: const Icon(
-                      Icons.delete,
-                      color: Colors.red,
-                    ),
-                  ),
-                ),
+                // SizedBox(
+                //   height: 10,
+                //   child: IconButton(
+                //     onPressed: () {},
+                //     icon: const Icon(
+                //       Icons.delete,
+                //       color: Colors.red,
+                //     ),
+                //   ),
+                // ),
               ],
             ),
           ),

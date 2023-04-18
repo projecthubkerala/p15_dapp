@@ -30,8 +30,9 @@ class CloudStorageHelper {
         try {
           final downloadUrl = await uploadTask.snapshot.ref.getDownloadURL();
           print('File uploaded successfully: $downloadUrl');
-          documentRef.set({'imgurl': downloadUrl},
-              SetOptions(merge: true)).then((value) => "updated successfully");
+          documentRef.update(
+            {'imgurl': downloadUrl},
+          ).then((value) => "updated successfully");
           await FirebaseAuth.instance.signOut();
         } catch (e) {
           print(e);
