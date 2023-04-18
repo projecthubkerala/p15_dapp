@@ -1,14 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:notes_app/admin/home.dart';
 import 'package:notes_app/helper/firebaseaut.dart';
-import 'package:notes_app/home_screen.dart';
-import 'package:notes_app/login.dart';
 import 'package:notes_app/blockchain_services.dart';
 import 'package:notes_app/splashscreen.dart';
-import 'package:notes_app/user/signup.dart';
-import 'package:notes_app/user/user_home_page.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 
