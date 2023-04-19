@@ -22,7 +22,10 @@ class _VotersListState extends State<VotersList> {
           title: const Text('Voters List '),
         ),
         body: StreamBuilder<QuerySnapshot>(
-            stream: FirebaseFirestore.instance.collection('user').snapshots(),
+            stream: FirebaseFirestore.instance
+                .collection('user')
+                .orderBy('isAproved', descending: false)
+                .snapshots(),
             builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
               if (snapshot.hasError) {
                 return Text('Something went wrong');
@@ -41,6 +44,13 @@ class _VotersListState extends State<VotersList> {
               return ListView.builder(
                 itemCount: snapshot.data!.docs.length,
                 itemBuilder: (context, index) => User(
+                  onpressedreject: () {
+                    String id = snapshot.data!.docs[index].id;
+                    FirebaseFirestore.instance
+                        .collection('user')
+                        .doc(id)
+                        .delete();
+                  },
                   isAdmin: snapshot.data!.docs[index]['isAproved'],
                   name: snapshot.data!.docs[index]['name'],
                   adhar: snapshot.data!.docs[index]['adhar'],
@@ -66,6 +76,7 @@ class User extends StatelessWidget {
   final String email;
   final String img_url;
   final void Function()? onpressed;
+  final void Function()? onpressedreject;
 
   const User(
       {super.key,
@@ -74,7 +85,8 @@ class User extends StatelessWidget {
       required this.name,
       required this.adhar,
       required this.email,
-      required this.onpressed});
+      required this.onpressed,
+      required this.onpressedreject});
 
   @override
   Widget build(BuildContext context) {
@@ -109,45 +121,58 @@ class User extends StatelessWidget {
                   style: TextStyle(color: Colors.white),
                 ),
               ),
-              SizedBox(
-                  height: 30,
-                  child: ElevatedButton(
-                      onPressed: () async {
-                        final imageProvider = Image.network(img_url).image;
-                        showImageViewer(context, imageProvider,
-                            onViewerDismissed: () {
-                          print("dismissed");
-                        });
-                      },
-                      child: Text("View adhar"))), // Text('Phone : ${}'),
+              Row(
+                mainAxisAlignment: isAdmin
+                    ? MainAxisAlignment.start
+                    : MainAxisAlignment.spaceAround,
+                children: [
+                  SizedBox(
+                      height: 30,
+                      child: ElevatedButton(
+                          onPressed: () async {
+                            final imageProvider = Image.network(img_url).image;
+                            showImageViewer(context, imageProvider,
+                                onViewerDismissed: () {
+                              print("dismissed");
+                            });
+                          },
+                          child: Text("View adhar"))),
+                  if (!isAdmin) ...[
+                    SizedBox(
+                        height: 30,
+                        child: ElevatedButton(
+                            onPressed: onpressed, child: Text("Aprove"))),
+                    SizedBox(
+                        height: 30,
+                        child: ElevatedButton(
+                            onPressed: onpressedreject, child: Text("reject"))),
+                  ]
+                ],
+              ), // Text('Phone : ${}'),
             ],
           ),
         ),
-        trailing: Visibility(
-          visible: !isAdmin,
-          child: Container(
-            height: double.infinity,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                SizedBox(
-                    height: 30,
-                    child: ElevatedButton(
-                        onPressed: onpressed, child: Text("Aprove"))),
-                // SizedBox(
-                //   height: 10,
-                //   child: IconButton(
-                //     onPressed: () {},
-                //     icon: const Icon(
-                //       Icons.delete,
-                //       color: Colors.red,
-                //     ),
-                //   ),
-                // ),
-              ],
-            ),
-          ),
-        ),
+        // trailing: Visibility(
+        //   visible: !isAdmin,
+        //   child: Container(
+        //     height: double.infinity,
+        //     child: Column(
+        //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //       children: [
+        //         // SizedBox(
+        //         //   height: 10,
+        //         //   child: IconButton(
+        //         //     onPressed: () {},
+        //         //     icon: const Icon(
+        //         //       Icons.delete,
+        //         //       color: Colors.red,
+        //         //     ),
+        //         //   ),
+        //         // ),
+        //       ],
+        //     ),
+        //   ),
+        // ),
       ),
     );
   }
