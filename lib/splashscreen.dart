@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
+
 import 'package:notes_app/admin/home.dart';
 import 'package:notes_app/helper/firebaseaut.dart';
 import 'package:notes_app/login.dart';
