@@ -10,6 +10,7 @@ import 'package:notes_app/auth.dart';
 import 'package:notes_app/helper/firebaseaut.dart';
 import 'package:notes_app/home_screen.dart';
 import 'package:notes_app/login.dart';
+import 'package:notes_app/user/camera.dart';
 import 'package:notes_app/user/notverified.dart';
 import 'package:notes_app/user/user_home_page.dart';
 
@@ -34,6 +35,7 @@ class _SignupScreenState extends State<SignupScreen> {
 
   final _globalKey1 = GlobalKey<FormState>();
   String filePath = "";
+  String filePathselfie = "";
 
   Future<void> pickFile() async {
     final result = await FilePicker.platform.pickFiles(
@@ -44,6 +46,15 @@ class _SignupScreenState extends State<SignupScreen> {
     if (result == null) return;
     setState(() {
       filePath = result.files.single.path!;
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      setState(() {});
     });
   }
 
@@ -237,7 +248,7 @@ class _SignupScreenState extends State<SignupScreen> {
 
                               isPassword: false,
                               textFieldController: _AsdharController,
-                              hintText: 'Adhar Number- 12 Digit',
+                              hintText: 'Votter Id Card Number',
                               isVisible: false,
                               // suffixIcon: const Icon(
                               //   Icons.visibility_off,
@@ -253,7 +264,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         width: 20,
                       ),
                       Text(
-                        "Proof of your Adhar (image file)",
+                        "Proof of Votter Id Card",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
@@ -287,6 +298,54 @@ class _SignupScreenState extends State<SignupScreen> {
                       if (filePath != null)
                         Text(
                           'Selected file: ${filePath.split('/').last}',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  Row(
+                    children: [
+                      SizedBox(
+                        width: 20,
+                      ),
+                      Text(
+                        "Take a selfie of yours",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          fontSize: 15,
+                        ),
+                      ),
+                      Text(
+                        "*",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.red,
+                          fontSize: 15,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        child: SizedBox(
+                          width: double.infinity,
+                          child: ElevatedButton(
+                            onPressed: () =>
+                                Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => CameraPage(),
+                            )),
+                            child: Text('Take Selfie'),
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 16),
+                      if (imageFile != null)
+                        Text(
+                          'Selected file: ${imageFile}',
                           style: TextStyle(color: Colors.white),
                         ),
                     ],
@@ -400,20 +459,30 @@ class _SignupScreenState extends State<SignupScreen> {
         ),
       );
       return;
-    } else if (_AsdharController.text.isEmpty) {
+    } else if (imageFile == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Adhar Number is required'),
+          content: Text('Selfie required'),
         ),
       );
       return;
-    } else if (_AsdharController.text.length != 12) {
+    } else if (_AsdharController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Adhar should be 12 numbers'),
+          content: Text('votter id card Number is required'),
         ),
       );
-    } else if (_passwordController.text != _passWordConfirmController.text) {
+      return;
+    }
+    //  else if (_AsdharController.text.length != 12) {
+    //   ScaffoldMessenger.of(context).showSnackBar(
+    //     const SnackBar(
+    //       content: Text('Adhar should be 12 numbers'),
+    //     ),
+    //   );
+    // }
+
+    else if (_passwordController.text != _passWordConfirmController.text) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Password and Confirm Password must be same'),
@@ -444,6 +513,7 @@ class _SignupScreenState extends State<SignupScreen> {
             .firebasecreateuser(
                 // file_name: filePath,
                 file_path: filePath,
+                selfie_path: imageFile!.path,
                 email: _emailController.text,
                 password: _passwordController.text,
                 adhar: _AsdharController.text,
@@ -451,6 +521,7 @@ class _SignupScreenState extends State<SignupScreen> {
             .then((value) {
           setState(() {
             is_buttonlogin = false;
+            imageFile = null;
           });
         });
         Navigator.of(context)

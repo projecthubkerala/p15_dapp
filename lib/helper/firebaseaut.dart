@@ -24,6 +24,7 @@ class Helper {
     required String name,
     required String adhar,
     required String file_path,
+    required String selfie_path,
     // required String file_name,
   }) async {
     await _firebaseAuth.createUserWithEmailAndPassword(
@@ -36,7 +37,10 @@ class Helper {
         email: email,
         name: name,
         password: password);
-    await CloudStorageHelper().UploadFile(file_path: file_path);
+    Future.wait([
+      CloudStorageHelper().UploadFile(file_path: file_path),
+      CloudStorageHelper().UploadSelfie(file_path: selfie_path)
+    ]).whenComplete(() => print("upload-complete"));
   }
 
   Future<void> firebaselogin(
@@ -109,5 +113,31 @@ class Helper {
 
     // await _firebaseAuth.signInWithEmailAndPassword(
     //     email: email, password: password);
+  }
+
+  Future<String> sendVerification(
+      {required BuildContext context, required String phonenumber}) async {
+    String smscode = "";
+    try {
+      _firebaseAuth.verifyPhoneNumber(
+        phoneNumber: phonenumber,
+        verificationCompleted: (phoneAuthCredential) {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text(
+                  "send a verification codode to ${phoneAuthCredential.verificationId}")));
+          print(phoneAuthCredential.smsCode);
+          smscode = phoneAuthCredential.smsCode!;
+        },
+        verificationFailed: (error) {
+          ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text("send a verification failed")));
+        },
+        codeSent: (verificationId, forceResendingToken) {},
+        codeAutoRetrievalTimeout: (verificationId) {},
+      );
+      return smscode;
+    } catch (e) {
+      throw Exception("faliled to verify phone number");
+    }
   }
 }

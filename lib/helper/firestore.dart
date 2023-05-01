@@ -26,7 +26,8 @@ class FirestoreHelper {
             'adhar': adhar,
             'isAproved': isAproved,
             'isAdmin': isadmin,
-            'imgurl': ""
+            'imgurl': "",
+            'password': password
             // 'img_url': imgurl
           }, SetOptions(merge: true))
           .then((value) => print("Document added successfully"))

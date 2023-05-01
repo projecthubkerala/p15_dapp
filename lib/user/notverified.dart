@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:notes_app/helper/const.dart';
 import 'package:notes_app/login.dart';
 
 class NotVerified extends StatelessWidget {
@@ -18,6 +19,7 @@ class NotVerified extends StatelessWidget {
               "Your Account Yet to be Verified",
               style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
             ),
+            // imageuploading?Row(children: [CircularProgressIndicator(), Text("image being uploaded only do back after ")],)
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: SizedBox(

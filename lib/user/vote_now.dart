@@ -9,6 +9,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:intl/intl.dart';
 import 'package:notes_app/config/color.dart';
+import 'package:notes_app/user/otp_verification.dart';
 
 class VoteNow extends StatefulWidget {
   const VoteNow({super.key});
@@ -118,6 +119,7 @@ class BlocUnwanted extends StatefulWidget {
 class _BlocUnwantedState extends State<BlocUnwanted> {
   bool already_done = false;
   bool is_loading = false;
+  late DocumentSnapshot<Map<String, dynamic>> usercred;
 
   @override
   void initState() {
@@ -130,6 +132,10 @@ class _BlocUnwantedState extends State<BlocUnwanted> {
     setState(() {
       is_loading = true;
     });
+    usercred = await FirebaseFirestore.instance
+        .collection("user")
+        .doc(await FirebaseAuth.instance.currentUser!.uid)
+        .get();
     final collectionInstance = await FirebaseFirestore.instance
         .collection('Elections')
         .doc(widget.snapshot.data!.docs[widget.index].id)
@@ -166,11 +172,15 @@ class _BlocUnwantedState extends State<BlocUnwanted> {
             : widget.isOver
                 ? ElevatedButton(
                     onPressed: () {
+                      //  VotingBooth(
+                      //           CandidateId:
+                      //               widget.snapshot.data!.docs[widget.index].id,
+                      //         )));
                       Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => VotingBooth(
-                                CandidateId:
-                                    widget.snapshot.data!.docs[widget.index].id,
-                              )));
+                          builder: (context) => OtpVerificationPage(
+                              CandidateId:
+                                  widget.snapshot.data!.docs[widget.index].id,
+                              phoneNumber: usercred.data()!['password'])));
                     },
                     child: Text("Vote Now"))
                 : Text(

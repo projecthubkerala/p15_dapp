@@ -44,6 +44,7 @@ class _VotersListState extends State<VotersList> {
               return ListView.builder(
                 itemCount: snapshot.data!.docs.length,
                 itemBuilder: (context, index) => User(
+                  selfie_url: snapshot.data!.docs[index]['selfie_url'],
                   onpressedreject: () {
                     String id = snapshot.data!.docs[index].id;
                     FirebaseFirestore.instance
@@ -75,11 +76,13 @@ class User extends StatelessWidget {
   final String adhar;
   final String email;
   final String img_url;
+  final String selfie_url;
   final void Function()? onpressed;
   final void Function()? onpressedreject;
 
   const User(
       {super.key,
+      this.selfie_url = "",
       required this.isAdmin,
       required this.img_url,
       required this.name,
@@ -121,27 +124,54 @@ class User extends StatelessWidget {
                   style: TextStyle(color: Colors.white),
                 ),
               ),
+              if (!isAdmin) ...[
+                Padding(
+                  padding: const EdgeInsets.all(0.0),
+                  child: Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: SizedBox(
+                            height: 30,
+                            child: ElevatedButton(
+                                onPressed: () async {
+                                  final imageProvider =
+                                      Image.network(img_url).image;
+                                  showImageViewer(context, imageProvider,
+                                      onViewerDismissed: () {
+                                    print("dismissed");
+                                  });
+                                },
+                                child: Text("Votter ID"))),
+                      ),
+                      SizedBox(
+                          height: 30,
+                          child: ElevatedButton(
+                              onPressed: () async {
+                                final imageProvider =
+                                    Image.network(selfie_url).image;
+                                showImageViewer(context, imageProvider,
+                                    onViewerDismissed: () {
+                                  print("dismissed");
+                                });
+                              },
+                              child: Text("Image"))),
+                    ],
+                  ),
+                ),
+              ],
               Row(
-                mainAxisAlignment: isAdmin
-                    ? MainAxisAlignment.start
-                    : MainAxisAlignment.spaceAround,
+                mainAxisAlignment:
+                    isAdmin ? MainAxisAlignment.start : MainAxisAlignment.start,
                 children: [
-                  SizedBox(
-                      height: 30,
-                      child: ElevatedButton(
-                          onPressed: () async {
-                            final imageProvider = Image.network(img_url).image;
-                            showImageViewer(context, imageProvider,
-                                onViewerDismissed: () {
-                              print("dismissed");
-                            });
-                          },
-                          child: Text("View adhar"))),
                   if (!isAdmin) ...[
-                    SizedBox(
-                        height: 30,
-                        child: ElevatedButton(
-                            onPressed: onpressed, child: Text("Aprove"))),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: SizedBox(
+                          height: 30,
+                          child: ElevatedButton(
+                              onPressed: onpressed, child: Text("Aprove"))),
+                    ),
                     SizedBox(
                         height: 30,
                         child: ElevatedButton(
