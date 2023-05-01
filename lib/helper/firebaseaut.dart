@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:notes_app/admin/home.dart';
 import 'package:notes_app/helper/cloud_storeage.dart';
 import 'package:notes_app/helper/firestore.dart';
+import 'package:notes_app/user/notverified.dart';
 import 'package:notes_app/user/user_home_page.dart';
 
 class Helper {
@@ -20,6 +21,7 @@ class Helper {
 
   Future<void> firebasecreateuser({
     required String email,
+    required BuildContext context,
     required String password,
     required String name,
     required String adhar,
@@ -27,20 +29,28 @@ class Helper {
     required String selfie_path,
     // required String file_name,
   }) async {
-    await _firebaseAuth.createUserWithEmailAndPassword(
-        email: email, password: password);
-    await FirestoreHelper().updateprofile(
-        //       required String file_path,
-        // required String file_name,
-        // imgurl: imgurl,
-        adhar: adhar,
-        email: email,
-        name: name,
-        password: password);
-    Future.wait([
-      CloudStorageHelper().UploadFile(file_path: file_path),
-      CloudStorageHelper().UploadSelfie(file_path: selfie_path)
-    ]).whenComplete(() => print("upload-complete"));
+    try {
+      await _firebaseAuth.createUserWithEmailAndPassword(
+          email: email, password: password);
+      await FirestoreHelper().updateprofile(
+          //       required String file_path,
+          // required String file_name,
+          // imgurl: imgurl,
+          adhar: adhar,
+          email: email,
+          name: name,
+          password: password);
+      Future.wait([
+        CloudStorageHelper().UploadFile(file_path: file_path),
+        CloudStorageHelper().UploadSelfie(file_path: selfie_path)
+      ]);
+
+      _firebaseAuth.signOut();
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (context) => NotVerified()));
+    } catch (e) {
+      print(e);
+    }
   }
 
   Future<void> firebaselogin(

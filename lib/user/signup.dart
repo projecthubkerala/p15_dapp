@@ -248,7 +248,7 @@ class _SignupScreenState extends State<SignupScreen> {
 
                               isPassword: false,
                               textFieldController: _AsdharController,
-                              hintText: 'Votter Id Card Number',
+                              hintText: 'Adhar Card Number',
                               isVisible: false,
                               // suffixIcon: const Icon(
                               //   Icons.visibility_off,
@@ -264,7 +264,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         width: 20,
                       ),
                       Text(
-                        "Proof of Votter Id Card",
+                        "Proof of Adhar Card",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           color: Colors.white,
@@ -469,20 +469,17 @@ class _SignupScreenState extends State<SignupScreen> {
     } else if (_AsdharController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('votter id card Number is required'),
+          content: Text('adhar Number is required'),
         ),
       );
       return;
-    }
-    //  else if (_AsdharController.text.length != 12) {
-    //   ScaffoldMessenger.of(context).showSnackBar(
-    //     const SnackBar(
-    //       content: Text('Adhar should be 12 numbers'),
-    //     ),
-    //   );
-    // }
-
-    else if (_passwordController.text != _passWordConfirmController.text) {
+    } else if (_AsdharController.text.length != 12) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Adhar should be 12 numbers'),
+        ),
+      );
+    } else if (_passwordController.text != _passWordConfirmController.text) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Password and Confirm Password must be same'),
@@ -512,6 +509,7 @@ class _SignupScreenState extends State<SignupScreen> {
         _helperauth
             .firebasecreateuser(
                 // file_name: filePath,
+                context: context,
                 file_path: filePath,
                 selfie_path: imageFile!.path,
                 email: _emailController.text,

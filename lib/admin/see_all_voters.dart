@@ -44,7 +44,7 @@ class _VotersListState extends State<VotersList> {
               return ListView.builder(
                 itemCount: snapshot.data!.docs.length,
                 itemBuilder: (context, index) => User(
-                  selfie_url: snapshot.data!.docs[index]['selfie_url'],
+                  selfie_url: snapshot.data!.docs[index]['selfie_url'] ?? "",
                   onpressedreject: () {
                     String id = snapshot.data!.docs[index].id;
                     FirebaseFirestore.instance

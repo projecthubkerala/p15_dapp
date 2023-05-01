@@ -71,7 +71,7 @@ class CloudStorageHelper {
           print('File uploaded successfully: $downloadUrl');
           documentRef.set({'selfie_url': downloadUrl},
               SetOptions(merge: true)).then((value) => "updated successfully");
-          await FirebaseAuth.instance.signOut();
+          // await FirebaseAuth.instance.signOut();
         } catch (e) {
           print(e);
         }
