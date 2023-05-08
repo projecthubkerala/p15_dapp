@@ -428,6 +428,15 @@ class _SignupScreenState extends State<SignupScreen> {
         ));
   }
 
+  bool isValidEmail(String email) {
+    // Regular expression pattern for email validation
+    final String emailPattern =
+        r'^[\w-]+(\.[\w-]+)*@([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,7}$';
+
+    final RegExp regex = RegExp(emailPattern);
+    return regex.hasMatch(email);
+  }
+
   signup(
     BuildContext context,
   ) {
@@ -435,6 +444,14 @@ class _SignupScreenState extends State<SignupScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Email is required'),
+        ),
+      );
+      return;
+    }
+    if (!isValidEmail(_emailController.text)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Email is not valid '),
         ),
       );
       return;
@@ -522,8 +539,6 @@ class _SignupScreenState extends State<SignupScreen> {
             imageFile = null;
           });
         });
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => const NotVerified()));
       } on FirebaseAuthException catch (e) {
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text(e.message.toString())));

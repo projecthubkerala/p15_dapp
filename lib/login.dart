@@ -128,6 +128,28 @@ class _LoginScreenState extends State<LoginScreen> {
                           side: const BorderSide(color: Color(0xFF2CC66D)),
                         ),
                         onPressed: () {
+                          if (_emailController.text.isEmpty) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Email is required'),
+                              ),
+                            );
+                            return;
+                          } else if (!isValidEmail(_emailController.text)) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Email is not valid '),
+                              ),
+                            );
+                            return;
+                          } else if (_passwordController.text.isEmpty) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Password is required'),
+                              ),
+                            );
+                            return;
+                          }
                           setState(() {
                             bool is_buttonlogin = true;
                           });
@@ -299,4 +321,13 @@ class _CustomTextFieldState extends State<CustomTextField> {
       ),
     );
   }
+}
+
+bool isValidEmail(String email) {
+  // Regular expression pattern for email validation
+  final String emailPattern =
+      r'^[\w-]+(\.[\w-]+)*@([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,7}$';
+
+  final RegExp regex = RegExp(emailPattern);
+  return regex.hasMatch(email);
 }
